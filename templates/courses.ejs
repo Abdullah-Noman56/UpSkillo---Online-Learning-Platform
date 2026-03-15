@@ -1,0 +1,791 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Browse Courses - UpSkillo</title>
+    <style>
+        :root {
+            --primary: #667eea;
+            --primary-dark: #5a6fd8;
+            --secondary: #764ba2;
+            --success: #10b981;
+            --success-dark: #059669;
+            --warning: #f59e0b;
+            --danger: #ef4444;
+            --gray-50: #f9fafb;
+            --gray-100: #f3f4f6;
+            --gray-200: #e5e7eb;
+            --gray-300: #d1d5db;
+            --gray-600: #4b5563;
+            --gray-700: #374151;
+            --gray-800: #1f2937;
+            --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+            --shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+            --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body { 
+            font-family: 'Inter', 'Segoe UI', Arial, sans-serif; 
+            background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%);
+            min-height: 100vh;
+            color: var(--gray-800);
+            line-height: 1.6;
+        }
+
+        .header { 
+            background: white; 
+            padding: 1.5rem 2rem; 
+            box-shadow: var(--shadow);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .header h1 {
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            font-size: 1.8rem;
+            font-weight: 700;
+        }
+
+        .user-info {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .nav { 
+            background: linear-gradient(135deg, var(--primary), var(--secondary)); 
+            padding: 1rem 2rem; 
+            box-shadow: var(--shadow);
+        }
+
+        .nav a { 
+            color: white; 
+            text-decoration: none; 
+            margin-right: 2rem;
+            font-weight: 500;
+            padding: 0.5rem 1rem;
+            border-radius: 8px;
+            transition: all 0.3s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .nav a:hover { 
+            background: rgba(255, 255, 255, 0.15);
+            transform: translateY(-1px);
+        }
+
+        .container { 
+            max-width: 1200px; 
+            margin: 2rem auto; 
+            padding: 0 1.5rem;
+        }
+
+        .page-header {
+            text-align: center;
+            margin-bottom: 2rem;
+            padding: 2rem;
+            background: white;
+            border-radius: 16px;
+            box-shadow: var(--shadow);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .page-header::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            right: 0;
+            width: 200px;
+            height: 200px;
+            background: linear-gradient(135deg, rgba(102, 126, 234, 0.1), rgba(118, 75, 162, 0.1));
+            border-radius: 50%;
+            transform: translate(50%, -50%);
+        }
+
+        .page-header h2 {
+            font-size: 2.5rem;
+            margin-bottom: 0.5rem;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            font-weight: 700;
+        }
+
+        .page-header p {
+            color: var(--gray-600);
+            font-size: 1.2rem;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .stats-bar {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .stat-card {
+            background: white;
+            padding: 1.5rem;
+            border-radius: 12px;
+            box-shadow: var(--shadow);
+            text-align: center;
+            border-top: 4px solid var(--primary);
+            transition: transform 0.3s ease;
+        }
+
+        .stat-card:hover {
+            transform: translateY(-3px);
+        }
+
+        .stat-number {
+            font-size: 2rem;
+            font-weight: 700;
+            color: var(--primary);
+            margin: 0.5rem 0;
+            display: block;
+        }
+
+        .stat-label {
+            color: var(--gray-600);
+            font-size: 0.9rem;
+            font-weight: 500;
+        }
+
+        .stat-icon {
+            font-size: 2rem;
+            margin-bottom: 0.5rem;
+            opacity: 0.8;
+        }
+
+        .search-filter {
+            background: white;
+            padding: 2rem;
+            border-radius: 16px;
+            box-shadow: var(--shadow);
+            margin-bottom: 2rem;
+            border-left: 4px solid var(--primary);
+        }
+
+        .filter-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 1.5rem;
+            align-items: end;
+        }
+
+        .filter-group {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .filter-label {
+            font-weight: 600;
+            color: var(--gray-700);
+            margin-bottom: 0.5rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .filter-select {
+            padding: 0.75rem;
+            border: 2px solid var(--gray-200);
+            border-radius: 8px;
+            font-size: 0.9rem;
+            transition: all 0.3s ease;
+            background: white;
+        }
+
+        .filter-select:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+        }
+
+        .courses-grid { 
+            display: grid; 
+            grid-template-columns: repeat(auto-fill, minmax(380px, 1fr)); 
+            gap: 1.5rem; 
+            margin-bottom: 3rem;
+        }
+
+        .course-card { 
+            background: white; 
+            padding: 1.5rem; 
+            border-radius: 12px; 
+            box-shadow: var(--shadow);
+            transition: all 0.3s ease;
+            border: 1px solid var(--gray-200);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .course-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+        }
+
+        .course-card:hover {
+            transform: translateY(-5px);
+            box-shadow: var(--shadow-lg);
+        }
+
+        .course-card h3 {
+            font-size: 1.3rem;
+            margin-bottom: 0.75rem;
+            color: var(--gray-800);
+            line-height: 1.4;
+        }
+
+        .course-description {
+            color: var(--gray-600);
+            line-height: 1.5;
+            margin-bottom: 1rem;
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+        }
+
+        .category-tag {
+            background: #e0f2fe;
+            color: #0369a1;
+            padding: 0.4rem 0.8rem;
+            border-radius: 20px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            display: inline-block;
+            margin-bottom: 1rem;
+        }
+
+        .teacher {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            margin: 1rem 0;
+            padding: 0.75rem;
+            background: var(--gray-50);
+            border-radius: 8px;
+        }
+
+        .teacher-avatar {
+            width: 36px;
+            height: 36px;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: bold;
+            font-size: 0.9rem;
+        }
+
+        .teacher-name {
+            font-weight: 600;
+            color: var(--gray-700);
+            font-size: 0.9rem;
+        }
+
+        .teacher-role {
+            color: var(--gray-600);
+            font-size: 0.8rem;
+        }
+
+        .course-meta {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 1rem;
+            margin: 1rem 0;
+            padding: 1rem 0;
+            border-top: 1px solid var(--gray-200);
+            border-bottom: 1px solid var(--gray-200);
+        }
+
+        .meta-item {
+            text-align: center;
+        }
+
+        .meta-label {
+            font-size: 0.75rem;
+            color: var(--gray-600);
+            margin-bottom: 0.25rem;
+        }
+
+        .meta-value {
+            font-weight: 600;
+            color: var(--gray-800);
+            font-size: 0.9rem;
+        }
+
+        .rating {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+            margin: 1rem 0;
+        }
+
+        .stars {
+            color: #ffc107;
+            font-size: 1.1rem;
+        }
+
+        .rating-count {
+            color: var(--gray-600);
+            font-size: 0.9rem;
+        }
+
+        .btn { 
+            padding: 0.75rem 1.5rem; 
+            background: var(--primary); 
+            color: white; 
+            border: none; 
+            border-radius: 8px; 
+            cursor: pointer; 
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            font-size: 0.9rem;
+            flex: 1;
+        }
+
+        .btn:hover { 
+            background: var(--primary-dark);
+            transform: translateY(-2px);
+            box-shadow: var(--shadow);
+        }
+
+        .btn-success {
+            background: var(--success);
+        }
+
+        .btn-success:hover {
+            background: var(--success-dark);
+        }
+
+        .btn-outline {
+            background: transparent;
+            border: 2px solid var(--primary);
+            color: var(--primary);
+        }
+
+        .btn-outline:hover {
+            background: var(--primary);
+            color: white;
+        }
+
+        .course-actions {
+            display: flex;
+            gap: 0.75rem;
+            margin-top: 1rem;
+        }
+
+        .empty-state {
+            text-align: center;
+            padding: 4rem 2rem;
+            background: white;
+            border-radius: 16px;
+            box-shadow: var(--shadow);
+            grid-column: 1 / -1;
+        }
+
+        .empty-state h3 {
+            color: var(--gray-700);
+            margin-bottom: 1rem;
+            font-size: 1.5rem;
+        }
+
+        .empty-state p {
+            color: var(--gray-600);
+            margin-bottom: 2rem;
+            max-width: 400px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .cta-section {
+            text-align: center;
+            margin-top: 3rem;
+            padding: 3rem 2rem;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            border-radius: 16px;
+            color: white;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .cta-section::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" preserveAspectRatio="none"><path d="M0,0 L100,0 L100,100 Z" fill="rgba(255,255,255,0.1)"/></svg>');
+            background-size: cover;
+        }
+
+        .cta-section h2 {
+            margin: 0 0 1rem 0;
+            color: white;
+            font-size: 2rem;
+            position: relative;
+            z-index: 1;
+        }
+
+        .cta-section p {
+            margin: 0 0 2rem 0;
+            opacity: 0.9;
+            font-size: 1.1rem;
+            position: relative;
+            z-index: 1;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .fade-in {
+            animation: fadeIn 0.6s ease-out;
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 0 1rem;
+            }
+            
+            .nav {
+                padding: 1rem;
+                overflow-x: auto;
+            }
+            
+            .nav a {
+                margin-right: 1rem;
+                font-size: 0.9rem;
+            }
+            
+            .courses-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .course-actions {
+                flex-direction: column;
+            }
+            
+            .filter-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .stats-bar {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        @media (max-width: 480px) {
+            .stats-bar {
+                grid-template-columns: 1fr;
+            }
+            
+            .course-meta {
+                grid-template-columns: 1fr;
+                gap: 0.5rem;
+            }
+            
+            .page-header h2 {
+                font-size: 2rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>🎓 UpSkillo</h1>
+        <div class="user-info">
+            <span>Welcome, <strong><%= user.name %></strong></span>
+            <a href="/logout" style="color: var(--primary); text-decoration: none; font-weight: 600; padding: 0.5rem 1rem; border: 2px solid var(--primary); border-radius: 6px; transition: all 0.3s ease;">
+                🚪 Logout
+            </a>
+        </div>
+    </div>
+    
+    <div class="nav">
+        <a href="/dashboard">📊 Dashboard</a>
+        <a href="/courses">📚 Browse Courses</a>
+        <% if (user.type === 'student') { %>
+            <a href="/my-learning">🎓 My Learning</a>
+        <% } else { %>
+            <a href="/create-course">✨ Create Course</a>
+            <a href="/my-courses">📖 My Courses</a>
+        <% } %>
+    </div>
+    
+    <div class="container">
+        <div class="page-header fade-in">
+            <h2>Discover Your Next Learning Adventure</h2>
+            <p>Explore our curated collection of courses and start your learning journey today</p>
+        </div>
+
+        <!-- Stats Bar -->
+        <div class="stats-bar fade-in">
+            <div class="stat-card">
+                <div class="stat-icon">📚</div>
+                <div class="stat-number"><%= courses.length %></div>
+                <div class="stat-label">Total Courses</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-icon">⭐</div>
+                <div class="stat-number">
+                    <% 
+                        const ratedCourses = courses.filter(c => c.avg_rating);
+                        const avgRating = ratedCourses.length > 0 ? 
+                            (ratedCourses.reduce((acc, course) => acc + course.avg_rating, 0) / ratedCourses.length).toFixed(1) : 
+                            '0.0';
+                    %>
+                    <%= avgRating %>
+                </div>
+                <div class="stat-label">Average Rating</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-icon">👨‍🏫</div>
+                <div class="stat-number">
+                    <%= new Set(courses.map(course => course.teacher_name)).size %>
+                </div>
+                <div class="stat-label">Expert Teachers</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-icon">💼</div>
+                <div class="stat-number"><%= new Set(courses.map(course => course.category)).size %></div>
+                <div class="stat-label">Categories</div>
+            </div>
+        </div>
+
+        <!-- Search and Filter Section -->
+        <div class="search-filter fade-in">
+            <div class="filter-grid">
+                <div class="filter-group">
+                    <label class="filter-label">🔍 Search Courses</label>
+                    <input type="text" class="filter-select" placeholder="Enter course name or topic...">
+                </div>
+                <div class="filter-group">
+                    <label class="filter-label">📂 Category</label>
+                    <select class="filter-select">
+                        <option value="">All Categories</option>
+                        <option value="Programming">Programming</option>
+                        <option value="Data Science">Data Science</option>
+                        <option value="Marketing">Marketing</option>
+                        <option value="Design">Design</option>
+                        <option value="Business">Business</option>
+                        <option value="IT">IT</option>
+                    </select>
+                </div>
+                <div class="filter-group">
+                    <label class="filter-label">⭐ Rating</label>
+                    <select class="filter-select">
+                        <option value="">Any Rating</option>
+                        <option value="5">5 Stars</option>
+                        <option value="4">4+ Stars</option>
+                        <option value="3">3+ Stars</option>
+                    </select>
+                </div>
+                <div class="filter-group">
+                    <label class="filter-label">👨‍🏫 Teacher</label>
+                    <select class="filter-select">
+                        <option value="">All Teachers</option>
+                        <% 
+                            const uniqueTeachers = [...new Set(courses.map(course => course.teacher_name))];
+                            uniqueTeachers.forEach(teacher => {
+                        %>
+                            <option value="<%= teacher %>"><%= teacher %></option>
+                        <% }); %>
+                    </select>
+                </div>
+            </div>
+        </div>
+        
+        <% if (courses.length === 0) { %>
+            <div class="empty-state fade-in">
+                <h3>📚 No Courses Available</h3>
+                <p>We're working on adding new courses to help you learn and grow. Please check back later for exciting new content!</p>
+                <a href="/dashboard" class="btn btn-success" style="display: inline-flex; width: auto; padding: 1rem 2rem;">📊 Return to Dashboard</a>
+            </div>
+        <% } else { %>
+            <div class="courses-grid">
+                <% courses.forEach(course => { %>
+                    <div class="course-card fade-in">
+                        <div class="category-tag">
+                            <%= course.category || 'General' %>
+                        </div>
+                        
+                        <h3><%= course.title %></h3>
+                        
+                        <p class="course-description">
+                            <%= course.description && course.description.length > 120 ? 
+                                course.description.substring(0, 120) + '...' : 
+                                course.description || 'No description available' %>
+                        </p>
+
+                        <div class="teacher">
+                            <div class="teacher-avatar">
+                                <%= course.teacher_name ? course.teacher_name.charAt(0).toUpperCase() : 'T' %>
+                            </div>
+                            <div class="teacher-info">
+                                <div class="teacher-name"><%= course.teacher_name %></div>
+                                <div class="teacher-role">Course Teacher</div>
+                            </div>
+                        </div>
+
+                        <div class="course-meta">
+                            <div class="meta-item">
+                                <span class="meta-label">📚 Content</span>
+                                <span class="meta-value">Multiple</span>
+                            </div>
+                            <div class="meta-item">
+                                <span class="meta-label">⏱️ Duration</span>
+                                <span class="meta-value">Self-paced</span>
+                            </div>
+                            <div class="meta-item">
+                                <span class="meta-label">🎓 Level</span>
+                                <span class="meta-value">All Levels</span>
+                            </div>
+                        </div>
+
+                        <% if (course.avg_rating) { %>
+                            <div class="rating">
+                                <div class="stars">
+                                    <% const rating = parseFloat(course.avg_rating); %>
+                                    <% for (let i = 1; i <= 5; i++) { %>
+                                        <% if (i <= rating) { %>
+                                            ★
+                                        <% } else { %>
+                                            ☆
+                                        <% } %>
+                                    <% } %>
+                                </div>
+                                <span class="rating-count">
+                                    <%= rating.toFixed(1) %> (<%= course.review_count || 0 %> reviews)
+                                </span>
+                            </div>
+                        <% } else { %>
+                            <div class="rating">
+                                <span class="rating-count" style="color: var(--gray-400);">No ratings yet</span>
+                            </div>
+                        <% } %>
+                        
+                        <div class="course-actions">
+                            <a href="/enroll/<%= course.id %>" class="btn btn-success">
+                                🎯 Enroll Now
+                            </a>
+                            <a href="/course/<%= course.id %>" class="btn btn-outline">
+                                📖 Details
+                            </a>
+                        </div>
+                    </div>
+                <% }); %>
+            </div>
+        <% } %>
+
+        <!-- Call to Action -->
+        <div class="cta-section fade-in">
+            <h2>Ready to Start Learning?</h2>
+            <p>Join thousands of students already advancing their skills on UpSkillo</p>
+            <a href="/dashboard" class="btn" style="background: white; color: var(--primary); max-width: 200px; margin: 0 auto; position: relative; z-index: 1;">
+                🚀 Get Started
+            </a>
+        </div>
+    </div>
+
+    <script>
+        // Enhanced filter functionality
+        document.addEventListener('DOMContentLoaded', function() {
+            const searchInput = document.querySelector('input[type="text"]');
+            const categorySelect = document.querySelectorAll('select')[0];
+            const ratingSelect = document.querySelectorAll('select')[1];
+            const teacherSelect = document.querySelectorAll('select')[2];
+            const courseCards = document.querySelectorAll('.course-card');
+
+            function filterCourses() {
+                const searchTerm = searchInput.value.toLowerCase();
+                const categoryValue = categorySelect.value;
+                const ratingValue = ratingSelect.value;
+                const teacherValue = teacherSelect.value;
+
+                courseCards.forEach(card => {
+                    const title = card.querySelector('h3').textContent.toLowerCase();
+                    const description = card.querySelector('.course-description').textContent.toLowerCase();
+                    const category = card.querySelector('.category-tag').textContent;
+                    const ratingElement = card.querySelector('.rating-count');
+                    const rating = ratingElement ? ratingElement.textContent : '';
+                    const teacherName = card.querySelector('.teacher-name').textContent;
+
+                    let visible = true;
+
+                    // Search filter
+                    if (searchTerm && !title.includes(searchTerm) && !description.includes(searchTerm)) {
+                        visible = false;
+                    }
+
+                    // Category filter
+                    if (categoryValue && category !== categoryValue) {
+                        visible = false;
+                    }
+
+                    // Rating filter
+                    if (ratingValue && rating) {
+                        const courseRating = parseFloat(rating);
+                        if (courseRating < parseFloat(ratingValue)) {
+                            visible = false;
+                        }
+                    }
+
+                    // Teacher filter
+                    if (teacherValue && teacherName !== teacherValue) {
+                        visible = false;
+                    }
+
+                    card.style.display = visible ? 'block' : 'none';
+                });
+            }
+
+            searchInput.addEventListener('input', filterCourses);
+            categorySelect.addEventListener('change', filterCourses);
+            ratingSelect.addEventListener('change', filterCourses);
+            teacherSelect.addEventListener('change', filterCourses);
+
+            // Add staggered animation to course cards
+            const courseCardsAnimated = document.querySelectorAll('.course-card');
+            courseCardsAnimated.forEach((card, index) => {
+                card.style.animationDelay = `${index * 0.1}s`;
+            });
+        });
+    </script>
+</body>
+</html>

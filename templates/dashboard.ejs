@@ -1,0 +1,688 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard - UpSkillo</title>
+    <style>
+        :root {
+            --primary: #667eea;
+            --primary-dark: #5a6fd8;
+            --secondary: #764ba2;
+            --success: #10b981;
+            --success-dark: #059669;
+            --warning: #f59e0b;
+            --danger: #ef4444;
+            --gray-50: #f9fafb;
+            --gray-100: #f3f4f6;
+            --gray-200: #e5e7eb;
+            --gray-300: #d1d5db;
+            --gray-600: #4b5563;
+            --gray-700: #374151;
+            --gray-800: #1f2937;
+            --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+            --shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+            --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body { 
+            font-family: 'Inter', 'Segoe UI', Arial, sans-serif; 
+            margin: 0; 
+            padding: 0; 
+            background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%);
+            min-height: 100vh;
+            color: var(--gray-800);
+            line-height: 1.6;
+        }
+
+        .header { 
+            background: white; 
+            padding: 1.5rem 2rem; 
+            box-shadow: var(--shadow);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            backdrop-filter: blur(10px);
+        }
+
+        .header h1 {
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            font-size: 1.8rem;
+            font-weight: 700;
+        }
+
+        .user-info {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .nav { 
+            background: linear-gradient(135deg, var(--primary), var(--secondary)); 
+            padding: 1rem 2rem; 
+            box-shadow: var(--shadow);
+        }
+
+        .nav a { 
+            color: white; 
+            text-decoration: none; 
+            margin-right: 2rem;
+            font-weight: 500;
+            padding: 0.5rem 1rem;
+            border-radius: 8px;
+            transition: all 0.3s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .nav a:hover { 
+            background: rgba(255, 255, 255, 0.15);
+            transform: translateY(-1px);
+        }
+
+        .container { 
+            max-width: 1200px; 
+            margin: 2rem auto; 
+            padding: 0 1.5rem;
+        }
+
+        .welcome { 
+            background: white; 
+            padding: 2.5rem; 
+            border-radius: 16px; 
+            margin-bottom: 2rem;
+            box-shadow: var(--shadow);
+            border-left: 4px solid var(--primary);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .welcome::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            right: 0;
+            width: 200px;
+            height: 200px;
+            background: linear-gradient(135deg, rgba(102, 126, 234, 0.1), rgba(118, 75, 162, 0.1));
+            border-radius: 50%;
+            transform: translate(50%, -50%);
+        }
+
+        .welcome h2 {
+            font-size: 2rem;
+            margin-bottom: 0.5rem;
+            color: var(--gray-800);
+        }
+
+        .welcome p {
+            color: var(--gray-600);
+            font-size: 1.1rem;
+            max-width: 600px;
+        }
+
+        .courses-grid { 
+            display: grid; 
+            grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); 
+            gap: 1.5rem; 
+            margin-bottom: 2rem;
+        }
+
+        .course-card { 
+            background: white; 
+            padding: 1.5rem; 
+            border-radius: 12px; 
+            box-shadow: var(--shadow);
+            transition: all 0.3s ease;
+            border: 1px solid var(--gray-200);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .course-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+        }
+
+        .course-card:hover {
+            transform: translateY(-5px);
+            box-shadow: var(--shadow-lg);
+        }
+
+        .course-card h4 {
+            font-size: 1.25rem;
+            margin-bottom: 0.75rem;
+            color: var(--gray-800);
+            line-height: 1.4;
+        }
+
+        .course-description {
+            color: var(--gray-600);
+            margin-bottom: 1rem;
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+        }
+
+        .btn { 
+            padding: 0.75rem 1.5rem; 
+            background: var(--primary); 
+            color: white; 
+            border: none; 
+            border-radius: 8px; 
+            cursor: pointer; 
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            font-size: 0.9rem;
+        }
+
+        .btn:hover { 
+            background: var(--primary-dark);
+            transform: translateY(-2px);
+            box-shadow: var(--shadow);
+        }
+
+        .btn-success {
+            background: var(--success);
+        }
+
+        .btn-success:hover {
+            background: var(--success-dark);
+        }
+
+        .btn-secondary {
+            background: var(--gray-600);
+        }
+
+        .btn-secondary:hover {
+            background: var(--gray-700);
+        }
+
+        .btn-outline {
+            background: transparent;
+            border: 2px solid var(--primary);
+            color: var(--primary);
+        }
+
+        .btn-outline:hover {
+            background: var(--primary);
+            color: white;
+        }
+
+        .error { 
+            color: var(--danger); 
+            padding: 1rem;
+            background: #fef2f2;
+            border-radius: 8px;
+            margin-bottom: 1.5rem;
+            border-left: 4px solid var(--danger);
+        }
+
+        .dashboard-stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .stat-card {
+            background: white;
+            padding: 1.5rem;
+            border-radius: 12px;
+            box-shadow: var(--shadow);
+            text-align: center;
+            border-top: 4px solid var(--primary);
+            transition: transform 0.3s ease;
+        }
+
+        .stat-card:hover {
+            transform: translateY(-3px);
+        }
+
+        .stat-number {
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: var(--primary);
+            margin: 0.5rem 0;
+            display: block;
+        }
+
+        .stat-label {
+            color: var(--gray-600);
+            font-size: 0.9rem;
+            font-weight: 500;
+        }
+
+        .stat-icon {
+            font-size: 2rem;
+            margin-bottom: 0.5rem;
+            opacity: 0.8;
+        }
+
+        .teacher-actions {
+            background: linear-gradient(135deg, #e0f2fe, #f0f9ff);
+            padding: 2rem;
+            border-radius: 12px;
+            margin-bottom: 2rem;
+            border-left: 4px solid var(--primary);
+        }
+
+        .action-buttons {
+            display: flex;
+            gap: 1rem;
+            margin-top: 1.5rem;
+            flex-wrap: wrap;
+        }
+
+        .empty-state {
+            text-align: center;
+            padding: 3rem 2rem;
+            background: white;
+            border-radius: 12px;
+            box-shadow: var(--shadow);
+        }
+
+        .empty-state h3 {
+            color: var(--gray-700);
+            margin-bottom: 1rem;
+            font-size: 1.5rem;
+        }
+
+        .empty-state p {
+            color: var(--gray-600);
+            margin-bottom: 2rem;
+            max-width: 400px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .course-meta {
+            display: flex;
+            justify-content: space-between;
+            margin: 1rem 0;
+            font-size: 0.85rem;
+            color: var(--gray-600);
+            padding: 0.75rem 0;
+            border-top: 1px solid var(--gray-200);
+            border-bottom: 1px solid var(--gray-200);
+        }
+
+        .course-actions {
+            display: flex;
+            gap: 0.75rem;
+            margin-top: 1rem;
+            flex-wrap: wrap;
+        }
+
+        .course-actions .btn {
+            flex: 1;
+            min-width: 120px;
+            text-align: center;
+        }
+
+        .role-badge {
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            color: white;
+            padding: 0.25rem 0.75rem;
+            border-radius: 20px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            text-transform: capitalize;
+        }
+
+        .section-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin: 2rem 0 1.5rem 0;
+        }
+
+        .section-header h3 {
+            font-size: 1.5rem;
+            color: var(--gray-800);
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .quick-links {
+            background: white;
+            padding: 2rem;
+            border-radius: 12px;
+            box-shadow: var(--shadow);
+            margin-top: 2rem;
+        }
+
+        .quick-links h3 {
+            margin-bottom: 1.5rem;
+            color: var(--gray-800);
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .links-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1rem;
+        }
+
+        .progress-ring {
+            width: 80px;
+            height: 80px;
+        }
+
+        .progress-circle {
+            transform: rotate(-90deg);
+            width: 80px;
+            height: 80px;
+        }
+
+        .progress-bg {
+            fill: none;
+            stroke: var(--gray-200);
+            stroke-width: 6;
+        }
+
+        .progress-fill {
+            fill: none;
+            stroke: var(--success);
+            stroke-width: 6;
+            stroke-linecap: round;
+            stroke-dasharray: 226.08;
+            transition: stroke-dashoffset 0.5s ease;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .fade-in {
+            animation: fadeIn 0.6s ease-out;
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 0 1rem;
+            }
+            
+            .nav {
+                padding: 1rem;
+                overflow-x: auto;
+            }
+            
+            .nav a {
+                margin-right: 1rem;
+                font-size: 0.9rem;
+            }
+            
+            .courses-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .action-buttons {
+                flex-direction: column;
+            }
+            
+            .action-buttons .btn {
+                width: 100%;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>🎓 UpSkillo</h1>
+        <div class="user-info">
+            <span>Welcome, <strong><%= user.name %></strong> <span class="role-badge"><%= user.type %></span></span>
+            <a href="/logout" class="btn btn-outline" style="padding: 0.5rem 1rem; font-size: 0.85rem;">🚪 Logout</a>
+        </div>
+    </div>
+    
+    <div class="nav">
+        <a href="/dashboard">📊 Dashboard</a>
+        <a href="/courses">📚 Browse Courses</a>
+        <% if (user.type === 'student') { %>
+            <a href="/my-learning">🎓 My Learning</a>
+            <a href="/achievements">🏆 Achievements</a>
+        <% } else { %>
+            <a href="/create-course">✨ Create Course</a>
+            <a href="/my-courses">📖 My Courses</a>
+        <% } %>
+    </div>
+    
+    <div class="container">
+        <div class="welcome fade-in">
+            <h2>Welcome back, <%= user.name %>! 👋</h2>
+            <p>
+                <% if (user.type === 'student') { %>
+                    Continue your learning journey or explore new courses to enhance your skills. Your progress is looking great!
+                <% } else { %>
+                    Manage your courses and help students learn new skills. Create engaging content and track your teaching progress.
+                <% } %>
+            </p>
+            
+            <% if (user.type === 'teacher') { %>
+                <div class="teacher-actions">
+                    <h3 style="margin: 0 0 0.5rem 0; color: var(--primary);">🚀 Teacher Quick Actions</h3>
+                    <p style="color: var(--gray-600); margin: 0;">Create new content or manage your existing courses</p>
+                    <div class="action-buttons">
+                        <a href="/create-course" class="btn btn-success">✨ Create New Course</a>
+                        <a href="/my-courses" class="btn">📖 Manage Courses</a>
+                        <a href="/courses" class="btn btn-secondary">👀 Browse Courses</a>
+                    </div>
+                </div>
+            <% } %>
+        </div>
+        
+        <% if (error) { %>
+            <div class="error fade-in">
+                ⚠️ <%= error %>
+            </div>
+        <% } %>
+        
+        <!-- Dashboard Stats -->
+        <div class="dashboard-stats fade-in">
+            <% if (user.type === 'student') { %>
+                <div class="stat-card">
+                    <div class="stat-icon">📚</div>
+                    <div class="stat-label">Enrolled Courses</div>
+                    <div class="stat-number"><%= courses.length %></div>
+                    <div class="stat-label">Active Learning</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon">✅</div>
+                    <div class="stat-label">Completed Content</div>
+                    <div class="stat-number">12</div>
+                    <div class="stat-label">This Month</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon">🔥</div>
+                    <div class="stat-label">Learning Streak</div>
+                    <div class="stat-number">7</div>
+                    <div class="stat-label">Days</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon">⏱️</div>
+                    <div class="stat-label">Study Time</div>
+                    <div class="stat-number">18h</div>
+                    <div class="stat-label">This Week</div>
+                </div>
+            <% } else { %>
+                <div class="stat-card">
+                    <div class="stat-icon">📖</div>
+                    <div class="stat-label">My Courses</div>
+                    <div class="stat-number"><%= courses.length %></div>
+                    <div class="stat-label">Total Created</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon">👨‍🎓</div>
+                    <div class="stat-label">Total Students</div>
+                    <div class="stat-number">
+                        <% 
+                            let totalStudents = 0;
+                            courses.forEach(course => {
+                                totalStudents += course.enrollment_count || 0;
+                            });
+                        %>
+                        <%= totalStudents %>
+                    </div>
+                    <div class="stat-label">Across All Courses</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon">📝</div>
+                    <div class="stat-label">Total Content</div>
+                    <div class="stat-number">
+                        <% 
+                            let totalContent = 0;
+                            courses.forEach(course => {
+                                totalContent += course.content_count || 0;
+                            });
+                        %>
+                        <%= totalContent %>
+                    </div>
+                    <div class="stat-label">Content Created</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon">⭐</div>
+                    <div class="stat-label">Avg Rating</div>
+                    <div class="stat-number">4.8</div>
+                    <div class="stat-label">Student Feedback</div>
+                </div>
+            <% } %>
+        </div>
+
+        <div class="section-header fade-in">
+            <h3>
+                <% if (user.type === 'student') { %>
+                    📚 Your Enrolled Courses
+                <% } else { %>
+                    🎯 Your Teaching Courses
+                <% } %>
+            </h3>
+            <span class="stat-label"><%= courses.length %> course<%= courses.length !== 1 ? 's' : '' %></span>
+        </div>
+        
+        <% if (courses.length === 0) { %>
+            <div class="empty-state fade-in">
+                <% if (user.type === 'student') { %>
+                    <h3>No Courses Enrolled Yet</h3>
+                    <p>Start your learning journey by enrolling in courses that interest you. Discover new skills and advance your career!</p>
+                    <a href="/courses" class="btn btn-success">🚀 Browse Courses</a>
+                <% } else { %>
+                    <h3>No Courses Created Yet</h3>
+                    <p>Start sharing your knowledge by creating your first course. Inspire students and build your teaching portfolio!</p>
+                    <a href="/create-course" class="btn btn-success">✨ Create Your First Course</a>
+                <% } %>
+            </div>
+        <% } else { %>
+            <div class="courses-grid">
+                <% courses.forEach(course => { %>
+                    <div class="course-card fade-in">
+                        <h4><%= course.title %></h4>
+                        <p class="course-description">
+                            <%= course.description && course.description.length > 100 ? 
+                                course.description.substring(0, 100) + '...' : 
+                                course.description || 'No description available' %>
+                        </p>
+                        
+                        <div class="course-meta">
+                            <div>
+                                <strong>📂 Category:</strong> <%= course.category %>
+                            </div>
+                            <div>
+                                <strong>👨‍🏫 Teacher:</strong> <%= course.teacher_name %>
+                            </div>
+                        </div>
+
+                        <% if (user.type === 'teacher') { %>
+                            <div class="course-meta">
+                                <div>
+                                    <strong>👨‍🎓 Students:</strong> <%= course.enrollment_count || 0 %>
+                                </div>
+                                <div>
+                                    <strong>📝 Content:</strong> <%= course.content_count || 0 %>
+                                </div>
+                            </div>
+                        <% } %>
+                        
+                        <div class="course-actions">
+                            <% if (user.type === 'student') { %>
+                                <a href="/learn/<%= course.id %>" class="btn btn-success">▶️ Continue</a>
+                                <a href="/course/<%= course.id %>" class="btn btn-outline">📖 Details</a>
+                            <% } else { %>
+                                <a href="/add-lesson/<%= course.id %>" class="btn btn-success">➕ Add Content</a>
+                                <a href="/course/<%= course.id %>" class="btn">👀 View</a>
+                                <a href="#" class="btn btn-secondary">⚙️ Manage</a>
+                            <% } %>
+                        </div>
+                    </div>
+                <% }); %>
+            </div>
+        <% } %>
+
+        <!-- Quick Links Section -->
+        <div class="quick-links fade-in">
+            <h3>🔗 Quick Links</h3>
+            <div class="links-grid">
+                <a href="/courses" class="btn">📚 Browse All Courses</a>
+                <% if (user.type === 'teacher') { %>
+                    <a href="/create-course" class="btn btn-success">✨ Create New Course</a>
+                    <a href="/my-courses" class="btn">📖 Manage My Courses</a>
+                <% } else { %>
+                    <a href="/my-learning" class="btn btn-success">🎓 My Learning</a>
+                    <a href="/courses" class="btn btn-secondary">🔍 Find New Courses</a>
+                <% } %>
+                <a href="/dashboard" class="btn btn-outline">📊 Dashboard</a>
+                <a href="/logout" class="btn" style="background: var(--danger);">🚪 Logout</a>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Add subtle animations
+        document.addEventListener('DOMContentLoaded', function() {
+            const cards = document.querySelectorAll('.course-card, .stat-card');
+            cards.forEach((card, index) => {
+                card.style.animationDelay = `${index * 0.1}s`;
+            });
+        });
+
+        // Simple progress animation
+        function animateProgress() {
+            const progressElements = document.querySelectorAll('.progress-fill');
+            progressElements.forEach(progress => {
+                const progressValue = progress.getAttribute('data-progress');
+                progress.style.strokeDashoffset = 226.08 - (226.08 * progressValue / 100);
+            });
+        }
+
+        // Initialize animations
+        setTimeout(animateProgress, 500);
+    </script>
+</body>
+</html>

@@ -1,0 +1,595 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Create Course - UpSkillo</title>
+    <style>
+        :root {
+            --primary: #667eea;
+            --primary-dark: #5a6fd8;
+            --secondary: #764ba2;
+            --success: #10b981;
+            --success-dark: #059669;
+            --warning: #f59e0b;
+            --danger: #ef4444;
+            --gray-50: #f9fafb;
+            --gray-100: #f3f4f6;
+            --gray-200: #e5e7eb;
+            --gray-300: #d1d5db;
+            --gray-600: #4b5563;
+            --gray-700: #374151;
+            --gray-800: #1f2937;
+            --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+            --shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+            --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body { 
+            font-family: 'Inter', 'Segoe UI', Arial, sans-serif; 
+            background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%);
+            min-height: 100vh;
+            color: var(--gray-800);
+            line-height: 1.6;
+        }
+
+        .header { 
+            background: white; 
+            padding: 1.5rem 2rem; 
+            box-shadow: var(--shadow);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .header h1 {
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            font-size: 1.8rem;
+            font-weight: 700;
+        }
+
+        .user-info {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .role-badge {
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            color: white;
+            padding: 0.25rem 0.75rem;
+            border-radius: 20px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            text-transform: capitalize;
+        }
+
+        .nav { 
+            background: linear-gradient(135deg, var(--primary), var(--secondary)); 
+            padding: 1rem 2rem; 
+            box-shadow: var(--shadow);
+        }
+
+        .nav a { 
+            color: white; 
+            text-decoration: none; 
+            margin-right: 2rem;
+            font-weight: 500;
+            padding: 0.5rem 1rem;
+            border-radius: 8px;
+            transition: all 0.3s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .nav a:hover { 
+            background: rgba(255, 255, 255, 0.15);
+            transform: translateY(-1px);
+        }
+
+        .container { 
+            max-width: 800px; 
+            margin: 2rem auto; 
+            padding: 0 1.5rem;
+        }
+
+        .page-header {
+            margin-bottom: 2rem;
+            padding: 2rem;
+            background: white;
+            border-radius: 16px;
+            box-shadow: var(--shadow);
+            border-left: 4px solid var(--primary);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .page-header::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            right: 0;
+            width: 150px;
+            height: 150px;
+            background: linear-gradient(135deg, rgba(102, 126, 234, 0.1), rgba(118, 75, 162, 0.1));
+            border-radius: 50%;
+            transform: translate(50%, -50%);
+        }
+
+        .page-header h2 {
+            font-size: 2rem;
+            margin-bottom: 0.5rem;
+            color: var(--gray-800);
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+
+        .page-header p {
+            color: var(--gray-600);
+            font-size: 1.1rem;
+        }
+
+        .form-container { 
+            background: white; 
+            padding: 2.5rem; 
+            border-radius: 16px; 
+            box-shadow: var(--shadow);
+            margin-bottom: 2rem;
+            border-left: 4px solid var(--primary);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .form-container::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            right: 0;
+            width: 120px;
+            height: 120px;
+            background: linear-gradient(135deg, rgba(102, 126, 234, 0.05), rgba(118, 75, 162, 0.05));
+            border-radius: 50%;
+            transform: translate(50%, -50%);
+        }
+
+        .form-group { 
+            margin-bottom: 1.5rem; 
+            position: relative;
+        }
+
+        label { 
+            display: block; 
+            margin-bottom: 0.5rem; 
+            color: var(--gray-700);
+            font-weight: 600;
+            font-size: 0.95rem;
+        }
+
+        .required::after {
+            content: ' *';
+            color: var(--danger);
+        }
+
+        input, textarea, select { 
+            width: 100%; 
+            padding: 0.75rem 1rem; 
+            border: 2px solid var(--gray-200); 
+            border-radius: 8px; 
+            box-sizing: border-box;
+            font-size: 1rem;
+            font-family: 'Inter', sans-serif;
+            transition: all 0.3s ease;
+            background: white;
+        }
+
+        input:focus, textarea:focus, select:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+            transform: translateY(-1px);
+        }
+
+        textarea {
+            height: 140px;
+            resize: vertical;
+            line-height: 1.5;
+        }
+
+        select {
+            appearance: none;
+            background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 20 20'%3e%3cpath stroke='%236b7280' stroke-linecap='round' stroke-linejoin='round' stroke-width='1.5' d='m6 8 4 4 4-4'/%3e%3c/svg%3e");
+            background-position: right 0.75rem center;
+            background-repeat: no-repeat;
+            background-size: 1.5em 1.5em;
+            padding-right: 2.5rem;
+        }
+
+        .btn { 
+            padding: 0.875rem 2rem; 
+            background: var(--primary); 
+            color: white; 
+            border: none; 
+            border-radius: 8px; 
+            font-size: 1rem; 
+            cursor: pointer; 
+            transition: all 0.3s ease;
+            font-weight: 600;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+            text-decoration: none;
+        }
+
+        .btn:hover { 
+            background: var(--primary-dark);
+            transform: translateY(-2px);
+            box-shadow: var(--shadow);
+        }
+
+        .btn-success {
+            background: var(--success);
+        }
+
+        .btn-success:hover {
+            background: var(--success-dark);
+        }
+
+        .btn-secondary {
+            background: var(--gray-600);
+        }
+
+        .btn-secondary:hover {
+            background: var(--gray-700);
+        }
+
+        .btn-outline {
+            background: transparent;
+            border: 2px solid var(--primary);
+            color: var(--primary);
+        }
+
+        .btn-outline:hover {
+            background: var(--primary);
+            color: white;
+        }
+
+        .error { 
+            color: var(--danger); 
+            padding: 1rem 1.5rem;
+            background: #fef2f2;
+            border-radius: 8px;
+            margin-bottom: 1.5rem;
+            border-left: 4px solid var(--danger);
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-weight: 500;
+        }
+
+        .success { 
+            color: var(--success); 
+            padding: 1rem 1.5rem;
+            background: #f0fdf4;
+            border-radius: 8px;
+            margin-bottom: 1.5rem;
+            border-left: 4px solid var(--success);
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-weight: 500;
+        }
+
+        .form-actions {
+            display: flex;
+            gap: 1rem;
+            margin-top: 2rem;
+            padding-top: 1.5rem;
+            border-top: 1px solid var(--gray-200);
+        }
+
+        .form-actions .btn {
+            flex: 1;
+        }
+
+        .tips-section {
+            background: linear-gradient(135deg, #f0f9ff, #e0f2fe);
+            padding: 2rem;
+            border-radius: 16px;
+            box-shadow: var(--shadow);
+            border-left: 4px solid var(--primary);
+        }
+
+        .tips-section h3 {
+            color: var(--gray-800);
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-size: 1.3rem;
+        }
+
+        .tips-list {
+            list-style: none;
+            padding: 0;
+        }
+
+        .tips-list li {
+            padding: 0.75rem 0;
+            color: var(--gray-700);
+            display: flex;
+            align-items: flex-start;
+            gap: 0.75rem;
+            border-bottom: 1px solid rgba(102, 126, 234, 0.1);
+        }
+
+        .tips-list li:last-child {
+            border-bottom: none;
+        }
+
+        .tips-list li::before {
+            content: '💡';
+            font-size: 1.1rem;
+            flex-shrink: 0;
+            margin-top: 0.1rem;
+        }
+
+        .input-hint {
+            color: var(--gray-500);
+            font-size: 0.85rem;
+            margin-top: 0.5rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .filename-preview {
+            background: var(--gray-50);
+            padding: 1rem;
+            border-radius: 8px;
+            margin-top: 0.5rem;
+            border: 1px solid var(--gray-200);
+        }
+
+        .filename-preview span {
+            font-weight: 600;
+            color: var(--primary);
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .fade-in {
+            animation: fadeIn 0.6s ease-out;
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 0 1rem;
+            }
+            
+            .nav {
+                padding: 1rem;
+                overflow-x: auto;
+            }
+            
+            .nav a {
+                margin-right: 1rem;
+                font-size: 0.9rem;
+            }
+            
+            .form-actions {
+                flex-direction: column;
+            }
+            
+            .page-header {
+                padding: 1.5rem;
+            }
+            
+            .page-header h2 {
+                font-size: 1.75rem;
+            }
+            
+            .form-container {
+                padding: 2rem 1.5rem;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .header {
+                padding: 1rem 1.5rem;
+                flex-direction: column;
+                gap: 1rem;
+                text-align: center;
+            }
+            
+            .user-info {
+                flex-direction: column;
+                gap: 0.5rem;
+            }
+            
+            .page-header h2 {
+                font-size: 1.5rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>🎓 UpSkillo</h1>
+        <div class="user-info">
+            <span>Welcome, <strong><%= user.name %></strong> <span class="role-badge"><%= user.type %></span></span>
+            <a href="/logout" class="btn btn-outline" style="padding: 0.5rem 1rem; font-size: 0.85rem;">🚪 Logout</a>
+        </div>
+    </div>
+    
+    <div class="nav">
+        <a href="/dashboard">📊 Dashboard</a>
+        <a href="/courses">📚 Browse Courses</a>
+        <a href="/create-course">✨ Create Course</a>
+        <a href="/my-courses">📖 My Courses</a>
+    </div>
+    
+    <div class="container">
+        <div class="page-header fade-in">
+            <h2>✨ Create New Course</h2>
+            <p>Share your knowledge and inspire students with your expertise</p>
+        </div>
+        
+        <% if (error) { %>
+            <div class="error fade-in">
+                ⚠️ <%= error %>
+            </div>
+        <% } %>
+        
+        <% if (success) { %>
+            <div class="success fade-in">
+                ✅ <%= success %>
+            </div>
+        <% } %>
+        
+        <div class="form-container fade-in">
+            <form action="/create-course" method="POST" id="courseForm">
+                <div class="form-group">
+                    <label for="title" class="required">Course Title</label>
+                    <input type="text" id="title" name="title" required 
+                           placeholder="Enter an engaging course title (e.g., 'Web Development Fundamentals')"
+                           maxlength="255">
+                    <div class="input-hint">🎯 Make it clear and descriptive to attract students</div>
+                </div>
+                
+                <div class="form-group">
+                    <label for="category" class="required">Course Category</label>
+                    <select id="category" name="category" required>
+                        <option value="">Choose a category that best fits your course</option>
+                        <option value="Programming">💻 Programming</option>
+                        <option value="Data Science">📊 Data Science</option>
+                        <option value="Marketing">📈 Marketing</option>
+                        <option value="Design">🎨 Design</option>
+                        <option value="Business">💼 Business</option>
+                        <option value="IT">🔧 IT</option>
+                        <option value="Other">🔧 Other</option>
+                    </select>
+                    <div class="input-hint">📂 Select the most relevant category for better discoverability</div>
+                </div>
+                
+                <div class="form-group">
+                    <label for="description" class="required">Course Description</label>
+                    <textarea id="description" name="description" required 
+                              placeholder="Describe what students will learn, key topics covered, and who this course is for..."></textarea>
+                    <div class="input-hint">📝 Be detailed and highlight the value students will get</div>
+                </div>
+
+                <div class="form-group">
+                    <label for="filename">Course Material File (Optional)</label>
+                    <input type="text" id="filename" name="filename" 
+                           placeholder="Enter filename (e.g., course_material.pdf, syllabus.docx)"
+                           maxlength="255">
+                    <div class="input-hint">📎 You can add course materials like PDFs, documents, or resource files</div>
+                    <div class="filename-preview">
+                        📁 File: <span id="filenameDisplay">No file selected</span>
+                    </div>
+                </div>
+                
+                <div class="form-actions">
+                    <button type="submit" class="btn btn-success">
+                        ✨ Create Course
+                    </button>
+                    <a href="/my-courses" class="btn btn-secondary">
+                        ↩️ Cancel
+                    </a>
+                </div>
+            </form>
+        </div>
+        
+        <div class="tips-section fade-in">
+            <h3>🎓 Course Creation Tips</h3>
+            <ul class="tips-list">
+                <li><strong>Clear Title:</strong> Choose a title that clearly communicates what students will learn</li>
+                <li><strong>Relevant Category:</strong> Select the most accurate category for better student discovery</li>
+                <li><strong>Compelling Description:</strong> Write a detailed description that highlights the value and outcomes</li>
+                <li><strong>Course Materials:</strong> Consider adding supplementary materials like PDFs or documents</li>
+                <li><strong>Plan Your Content:</strong> Think about the lessons and structure before you start creating</li>
+                <li><strong>Engage Students:</strong> Consider including practical exercises and real-world examples</li>
+            </ul>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Filename display
+            const filenameInput = document.getElementById('filename');
+            const filenameDisplay = document.getElementById('filenameDisplay');
+            
+            filenameInput.addEventListener('input', function() {
+                if (this.value.trim()) {
+                    filenameDisplay.textContent = this.value;
+                    filenameDisplay.style.color = 'var(--primary)';
+                } else {
+                    filenameDisplay.textContent = 'No file selected';
+                    filenameDisplay.style.color = 'var(--gray-500)';
+                }
+            });
+
+            // Add character counter for title
+            const titleInput = document.getElementById('title');
+            const titleCounter = document.createElement('div');
+            titleCounter.className = 'input-hint';
+            titleCounter.innerHTML = '📝 <span id="titleCount">0</span>/255 characters';
+            titleInput.parentNode.appendChild(titleCounter);
+
+            titleInput.addEventListener('input', function() {
+                document.getElementById('titleCount').textContent = this.value.length;
+            });
+
+            // Add character counter for description
+            const descriptionInput = document.getElementById('description');
+            const descriptionCounter = document.createElement('div');
+            descriptionCounter.className = 'input-hint';
+            descriptionCounter.innerHTML = '📝 <span id="descriptionCount">0</span> characters';
+            descriptionInput.parentNode.appendChild(descriptionCounter);
+
+            descriptionInput.addEventListener('input', function() {
+                document.getElementById('descriptionCount').textContent = this.value.length;
+            });
+
+            // Form validation
+            const form = document.getElementById('courseForm');
+            form.addEventListener('submit', function(e) {
+                const title = titleInput.value.trim();
+                const category = document.getElementById('category').value;
+                const description = descriptionInput.value.trim();
+                
+                if (!title || !category || !description) {
+                    e.preventDefault();
+                    alert('⚠️ Please fill in all required fields (Title, Category, and Description).');
+                    return;
+                }
+                
+                // Optional: Add any additional validation here
+            });
+
+            // Add animation to form elements
+            const formElements = document.querySelectorAll('.form-group');
+            formElements.forEach((element, index) => {
+                element.style.animationDelay = `${index * 0.1}s`;
+            });
+        });
+    </script>
+</body>
+</html>

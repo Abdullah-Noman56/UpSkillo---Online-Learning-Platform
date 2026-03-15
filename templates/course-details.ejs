@@ -1,0 +1,573 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title><%= course.title %> - UpSkillo</title>
+    <style>
+        :root {
+            --primary: #667eea;
+            --primary-dark: #5a6fd8;
+            --secondary: #764ba2;
+            --success: #10b981;
+            --success-dark: #059669;
+            --warning: #f59e0b;
+            --danger: #ef4444;
+            --gray-50: #f9fafb;
+            --gray-100: #f3f4f6;
+            --gray-200: #e5e7eb;
+            --gray-300: #d1d5db;
+            --gray-600: #4b5563;
+            --gray-700: #374151;
+            --gray-800: #1f2937;
+            --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+            --shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+            --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body { 
+            font-family: 'Inter', 'Segoe UI', Arial, sans-serif; 
+            background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%);
+            min-height: 100vh;
+            color: var(--gray-800);
+            line-height: 1.6;
+        }
+
+        .header { 
+            background: white; 
+            padding: 1.5rem 2rem; 
+            box-shadow: var(--shadow);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .header h1 {
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            font-size: 1.8rem;
+            font-weight: 700;
+        }
+
+        .user-info {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .nav { 
+            background: linear-gradient(135deg, var(--primary), var(--secondary)); 
+            padding: 1rem 2rem; 
+            box-shadow: var(--shadow);
+        }
+
+        .nav a { 
+            color: white; 
+            text-decoration: none; 
+            margin-right: 2rem;
+            font-weight: 500;
+            padding: 0.5rem 1rem;
+            border-radius: 8px;
+            transition: all 0.3s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .nav a:hover { 
+            background: rgba(255, 255, 255, 0.15);
+            transform: translateY(-1px);
+        }
+
+        .container { 
+            max-width: 1200px; 
+            margin: 2rem auto; 
+            padding: 0 1.5rem;
+        }
+
+        .course-header { 
+            background: white; 
+            padding: 2.5rem; 
+            border-radius: 16px; 
+            margin-bottom: 2rem;
+            box-shadow: var(--shadow);
+            border-left: 4px solid var(--primary);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .course-header::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            right: 0;
+            width: 200px;
+            height: 200px;
+            background: linear-gradient(135deg, rgba(102, 126, 234, 0.1), rgba(118, 75, 162, 0.1));
+            border-radius: 50%;
+            transform: translate(50%, -50%);
+        }
+
+        .sections { 
+            display: grid; 
+            grid-template-columns: 2fr 1fr; 
+            gap: 2rem; 
+        }
+
+        .main-content { 
+            background: white; 
+            padding: 2rem; 
+            border-radius: 12px;
+            box-shadow: var(--shadow);
+        }
+
+        .sidebar { 
+            background: white; 
+            padding: 2rem; 
+            border-radius: 12px;
+            box-shadow: var(--shadow);
+        }
+
+        .btn { 
+            padding: 0.75rem 1.5rem; 
+            background: var(--primary); 
+            color: white; 
+            border: none; 
+            border-radius: 8px; 
+            cursor: pointer; 
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            font-size: 0.9rem;
+        }
+
+        .btn:hover { 
+            background: var(--primary-dark);
+            transform: translateY(-2px);
+            box-shadow: var(--shadow);
+        }
+
+        .btn-success {
+            background: var(--success);
+        }
+
+        .btn-success:hover {
+            background: var(--success-dark);
+        }
+
+        .btn-secondary {
+            background: var(--gray-600);
+        }
+
+        .btn-secondary:hover {
+            background: var(--gray-700);
+        }
+
+        .rating { 
+            color: #ffc107; 
+            font-size: 1.2em;
+        }
+
+        .content-item { 
+            padding: 1rem; 
+            border: 1px solid var(--gray-200); 
+            margin: 0.5rem 0; 
+            border-radius: 8px;
+            background: var(--gray-50);
+        }
+
+        .forum-post { 
+            border: 1px solid var(--gray-200); 
+            padding: 1.5rem; 
+            margin: 1rem 0; 
+            border-radius: 8px;
+            background: white;
+        }
+
+        .review-item { 
+            border-bottom: 1px solid var(--gray-200); 
+            padding: 1rem 0; 
+        }
+
+        .review-item:last-child { 
+            border-bottom: none; 
+        }
+
+        .form-group { 
+            margin-bottom: 1rem; 
+        }
+
+        label { 
+            display: block; 
+            margin-bottom: 0.5rem; 
+            color: var(--gray-700);
+            font-weight: 600;
+        }
+
+        input, textarea, select { 
+            width: 100%; 
+            padding: 0.75rem; 
+            border: 2px solid var(--gray-200); 
+            border-radius: 8px; 
+            box-sizing: border-box;
+            font-family: 'Inter', sans-serif;
+        }
+
+        textarea { 
+            resize: vertical; 
+        }
+
+        .enrollment-status { 
+            padding: 1rem; 
+            border-radius: 8px; 
+            margin: 1rem 0; 
+        }
+
+        .enrolled { 
+            background: #d4edda; 
+            color: #155724; 
+            border: 1px solid #c3e6cb;
+        }
+
+        .not-enrolled { 
+            background: #fff3cd; 
+            color: #856404; 
+            border: 1px solid #ffeaa7;
+        }
+
+        .empty-state {
+            text-align: center;
+            padding: 2rem;
+            color: var(--gray-600);
+            background: var(--gray-50);
+            border-radius: 8px;
+            margin: 1rem 0;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .fade-in {
+            animation: fadeIn 0.6s ease-out;
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 0 1rem;
+            }
+            
+            .nav {
+                padding: 1rem;
+                overflow-x: auto;
+            }
+            
+            .nav a {
+                margin-right: 1rem;
+                font-size: 0.9rem;
+            }
+            
+            .sections {
+                grid-template-columns: 1fr;
+            }
+            
+            .course-header {
+                padding: 1.5rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>🎓 UpSkillo</h1>
+        <div class="user-info">
+            <span>Welcome, <strong><%= user.name %></strong></span>
+            <a href="/logout" style="color: var(--primary); text-decoration: none; font-weight: 600; padding: 0.5rem 1rem; border: 2px solid var(--primary); border-radius: 6px; transition: all 0.3s ease;">
+                🚪 Logout
+            </a>
+        </div>
+    </div>
+    
+    <div class="nav">
+        <a href="/dashboard">📊 Dashboard</a>
+        <a href="/courses">📚 Browse Courses</a>
+        <% if (user.type === 'student') { %>
+            <a href="/my-learning">🎓 My Learning</a>
+        <% } else { %>
+            <a href="/create-course">✨ Create Course</a>
+            <a href="/my-courses">📖 My Courses</a>
+        <% } %>
+    </div>
+    
+    <div class="container">
+        <div class="course-header fade-in">
+            <h1><%= course.title %></h1>
+            <p style="font-size: 1.1em; color: var(--gray-600); margin: 1rem 0;"><%= course.description %></p>
+            
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 1.5rem;">
+                <div>
+                    <div class="rating">
+                        ⭐ 
+                        <% if (course.avg_rating) { %>
+                            <%= parseFloat(course.avg_rating).toFixed(1) %>
+                            <% if (course.review_count > 0) { %>
+                                (<%= course.review_count %> review<%= course.review_count === 1 ? '' : 's' %>)
+                            <% } %>
+                        <% } else { %>
+                            No ratings yet
+                        <% } %>
+                    </div>
+                    <p style="margin: 0.5rem 0;"><strong>Teacher:</strong> <%= course.teacher_name %></p>
+                    <% if (course.teacher_bio) { %>
+                        <p style="margin: 0.5rem 0; font-style: italic; color: var(--gray-600);"><%= course.teacher_bio %></p>
+                    <% } %>
+                    <p style="margin: 0.5rem 0;"><strong>Category:</strong> <%= course.category %></p>
+                    <% if (course.filename) { %>
+                        <p style="margin: 0.5rem 0;"><strong>Course Material:</strong> <%= course.filename %></p>
+                    <% } %>
+                </div>
+                
+                <div>
+                    <% if (hasAccess) { %>
+                        <div class="enrollment-status enrolled">
+                            ✅ You have access to this course
+                        </div>
+                        <a href="/learn/<%= course.id %>" class="btn btn-success">Continue Learning</a>
+                    <% } else { %>
+                        <div class="enrollment-status not-enrolled">
+                            🔒 Enroll to access course content
+                        </div>
+                        <a href="/enroll/<%= course.id %>" class="btn btn-success">
+                            Enroll Now
+                        </a>
+                    <% } %>
+                </div>
+            </div>
+        </div>
+        
+        <div class="sections">
+            <div class="main-content">
+                <% if (hasAccess) { %>
+                    <!-- Content Section for Enrolled Students/Teachers -->
+                    <h3 style="margin-bottom: 1.5rem;">📚 Course Content</h3>
+                    <% if (content.length > 0) { %>
+                        <% content.forEach(function(item) { %>
+                            <div class="content-item">
+                                <h4 style="margin: 0 0 0.5rem 0;">
+                                    <%= item.lesson_title %>
+                                </h4>
+                                <% if (item.description) { %>
+                                    <p style="margin: 0 0 0.5rem 0; color: var(--gray-600);"><%= item.description %></p>
+                                <% } %>
+                                <% if (item.filename) { %>
+                                    <p style="margin: 0 0 0.5rem 0;">
+                                        <strong>Resource:</strong> 
+                                        <span style="color: var(--primary);"><%= item.filename %></span>
+                                    </p>
+                                <% } %>
+                                <% if (user.type === 'student') { %>
+                                    <button class="btn" onclick="completeContent(<%= item.id %>)" 
+                                            style="background: var(--success);">
+                                        ✅ Mark as Complete
+                                    </button>
+                                <% } %>
+                            </div>
+                        <% }); %>
+                    <% } else { %>
+                        <div class="empty-state">
+                            <p>No content available yet.</p>
+                            <p>The teacher is preparing course materials.</p>
+                        </div>
+                    <% } %>
+                    
+                    <!-- Forum Section -->
+                    <h3 style="margin-top: 2.5rem; margin-bottom: 1.5rem;">💬 Course Discussions</h3>
+                    
+                    <!-- New Post Form -->
+                    <div style="background: var(--gray-50); padding: 1.5rem; border-radius: 8px; margin-bottom: 1.5rem;">
+                        <h4 style="margin: 0 0 1rem 0;">Start a New Discussion</h4>
+                        <form action="/add-forum-post/<%= course.id %>" method="POST">
+                            <div class="form-group">
+                                <input type="text" name="title" placeholder="Discussion title" required
+                                       style="padding: 0.75rem; border: 2px solid var(--gray-200); border-radius: 8px; width: 100%;">
+                            </div>
+                            <div class="form-group">
+                                <textarea name="body" placeholder="What would you like to discuss?" 
+                                          style="height: 100px; padding: 0.75rem; border: 2px solid var(--gray-200); border-radius: 8px; width: 100%;"
+                                          required></textarea>
+                            </div>
+                            <button type="submit" class="btn">Create Discussion</button>
+                        </form>
+                    </div>
+                    
+                    <!-- Forum Posts -->
+                    <% if (forumPosts.length > 0) { %>
+                        <% forumPosts.forEach(function(post) { %>
+                            <div class="forum-post">
+                                <h4 style="margin: 0 0 0.5rem 0; color: var(--gray-800);">
+                                    <%= post.title %>
+                                </h4>
+                                <p style="margin: 0 0 0.5rem 0; color: var(--gray-600);">
+                                    <%= post.body %>
+                                </p>
+                                <div style="display: flex; justify-content: space-between; align-items: center; color: var(--gray-500); font-size: 0.9em;">
+                                    <span>By <strong><%= post.author_name %></strong> on <%= new Date(post.created_at).toLocaleDateString() %></span>
+                                    <span><%= post.reply_count || 0 %> repl<%= (post.reply_count || 0) === 1 ? 'y' : 'ies' %></span>
+                                </div>
+                                
+                                <!-- Reply Form -->
+                                <div style="margin-top: 1rem; padding-top: 1rem; border-top: 1px solid var(--gray-200);">
+                                    <form action="/add-forum-reply/<%= post.id %>" method="POST">
+                                        <div class="form-group">
+                                            <textarea name="reply_body" placeholder="Write your reply..." 
+                                                      style="height: 80px; padding: 0.75rem; border: 2px solid var(--gray-200); border-radius: 8px; width: 100%;"
+                                                      required></textarea>
+                                        </div>
+                                        <button type="submit" class="btn" style="background: var(--gray-600);">Post Reply</button>
+                                    </form>
+                                </div>
+                            </div>
+                        <% }); %>
+                    <% } else { %>
+                        <div class="empty-state">
+                            <p>No discussions yet. Start the first one!</p>
+                        </div>
+                    <% } %>
+                    
+                <% } else { %>
+                    <!-- Course Preview for Non-Enrolled Students -->
+                    <h3 style="margin-bottom: 1.5rem;">🎯 What You'll Learn</h3>
+                    <p style="margin-bottom: 1.5rem;">Enroll in this course to access comprehensive learning materials and join our community of learners.</p>
+                    
+                    <div style="background: var(--gray-50); padding: 1.5rem; border-radius: 8px; margin: 1.5rem 0;">
+                        <h4 style="color: var(--primary); margin-top: 0; margin-bottom: 1rem;">📚 Course Includes</h4>
+                        <ul style="line-height: 1.8; margin-bottom: 0;">
+                            <li>Comprehensive learning materials and resources</li>
+                            <li>Downloadable content and reference materials</li>
+                            <li>Interactive learning experiences</li>
+                            <li>Course completion tracking</li>
+                            <li>Access to course discussions and community support</li>
+                            <li>Direct Q&A with the teacher</li>
+                        </ul>
+                    </div>
+                    
+                    <div style="text-align: center; margin-top: 2rem;">
+                        <a href="/enroll/<%= course.id %>" class="btn btn-success" style="font-size: 1.2em; padding: 1rem 2rem;">
+                            🎉 Enroll Now
+                        </a>
+                    </div>
+                <% } %>
+            </div>
+            
+            <div class="sidebar">
+                <!-- Reviews Section -->
+                <h3 style="margin-bottom: 1.5rem;">⭐ Course Reviews</h3>
+                
+                <% if (hasAccess && user.type === 'student') { %>
+                    <!-- Review Form -->
+                    <div style="background: #fff3cd; padding: 1.5rem; border-radius: 8px; margin-bottom: 1.5rem;">
+                        <h4 style="margin-top: 0; margin-bottom: 1rem;">Add Your Review</h4>
+                        <form action="/add-review/<%= course.id %>" method="POST">
+                            <div class="form-group">
+                                <select name="rating" required style="width: 100%; padding: 0.75rem; border: 2px solid var(--gray-200); border-radius: 8px;">
+                                    <option value="">Rate this course</option>
+                                    <option value="5">★★★★★ Excellent</option>
+                                    <option value="4">★★★★☆ Very Good</option>
+                                    <option value="3">★★★☆☆ Good</option>
+                                    <option value="2">★★☆☆☆ Fair</option>
+                                    <option value="1">★☆☆☆☆ Poor</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <textarea name="review_text" placeholder="Share your experience with this course..." 
+                                          style="height: 80px; padding: 0.75rem; border: 2px solid var(--gray-200); border-radius: 8px; width: 100%;"></textarea>
+                            </div>
+                            <button type="submit" class="btn" style="width: 100%;">Submit Review</button>
+                        </form>
+                    </div>
+                <% } %>
+                
+                <!-- Reviews List -->
+                <% if (reviews.length > 0) { %>
+                    <% reviews.forEach(function(review) { %>
+                        <div class="review-item">
+                            <div class="rating" style="font-size: 1em;">
+                                <% for (let i = 1; i <= 5; i++) { %>
+                                    <% if (i <= review.rating) { %>
+                                        <span style="color: #ffc107;">★</span>
+                                    <% } else { %>
+                                        <span style="color: var(--gray-300);">☆</span>
+                                    <% } %>
+                                <% } %>
+                                <span style="color: var(--gray-600); margin-left: 0.5rem;"><%= review.rating %>/5</span>
+                            </div>
+                            <% if (review.review_text) { %>
+                                <p style="margin: 0.5rem 0; color: var(--gray-700);"><%= review.review_text %></p>
+                            <% } %>
+                            <div style="color: var(--gray-500); font-size: 0.9em;">
+                                By <strong><%= review.student_name %></strong><br>
+                                <small><%= new Date(review.created_at).toLocaleDateString() %></small>
+                            </div>
+                        </div>
+                    <% }); %>
+                <% } else { %>
+                    <div class="empty-state">
+                        <p>No reviews yet.</p>
+                        <% if (hasAccess && user.type === 'student') { %>
+                            <p>Be the first to review this course!</p>
+                        <% } else if (!hasAccess) { %>
+                            <p>Enroll to review this course.</p>
+                        <% } %>
+                    </div>
+                <% } %>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function completeContent(contentId) {
+            fetch('/complete-lesson/' + contentId, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                }
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    alert('🎉 Content marked as completed!');
+                } else {
+                    alert('❌ Error: ' + (data.error || 'Failed to mark content as completed'));
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                alert('❌ Network error. Please try again.');
+            });
+        }
+
+        // Add fade-in animation to elements
+        document.addEventListener('DOMContentLoaded', function() {
+            const elements = document.querySelectorAll('.content-item, .forum-post, .review-item');
+            elements.forEach((element, index) => {
+                element.style.animationDelay = `${index * 0.1}s`;
+            });
+        });
+    </script>
+</body>
+</html>

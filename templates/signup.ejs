@@ -1,0 +1,599 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sign Up • UpSkillo - Join the Cyber Security Revolution</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #667eea;
+            --primary-dark: #5a6fd8;
+            --secondary: #764ba2;
+            --success: #10b981;
+            --success-dark: #059669;
+            --danger: #ef4444;
+            --warning: #f59e0b;
+            --gray-50: #f9fafb;
+            --gray-100: #f3f4f6;
+            --gray-200: #e5e7eb;
+            --gray-300: #d1d5db;
+            --gray-600: #4b5563;
+            --gray-700: #374151;
+            --gray-800: #1f2937;
+            --gray-900: #111827;
+            --shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+            --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+            --radius: 12px;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: 'Inter', 'Segoe UI', Arial, sans-serif;
+            background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 2rem 1rem;
+            position: relative;
+            overflow-x: hidden;
+        }
+
+        body::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(102,126,234,0.12) 0%, transparent 70%);
+            animation: float 28s infinite linear;
+            z-index: -1;
+        }
+
+        .signup-container {
+            background: white;
+            padding: 3rem 2.8rem;
+            border-radius: var(--radius);
+            box-shadow: var(--shadow-lg);
+            max-width: 460px;
+            width: 100%;
+            position: relative;
+            border-top: 5px solid var(--primary);
+            overflow: hidden;
+        }
+
+        .signup-header {
+            text-align: center;
+            margin-bottom: 2.5rem;
+        }
+        .logo {
+            font-size: 2.4rem;
+            font-weight: 700;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 0.5rem;
+        }
+        .signup-header h1 {
+            font-size: 2rem;
+            color: var(--gray-800);
+            margin-bottom: 0.8rem;
+        }
+        .signup-header p {
+            color: var(--gray-600);
+            font-size: 1.05rem;
+        }
+
+        .form-group {
+            margin-bottom: 1.6rem;
+            position: relative;
+        }
+        label {
+            display: block;
+            margin-bottom: 0.6rem;
+            color: var(--gray-700);
+            font-weight: 600;
+            font-size: 0.95rem;
+        }
+        input, select {
+            width: 100%;
+            padding: 0.95rem 1rem;
+            border: 1.5px solid var(--gray-300);
+            border-radius: 8px;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+            background: var(--gray-50);
+        }
+        input:focus, select:focus {
+            outline: none;
+            border-color: var(--primary);
+            background: white;
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.15);
+        }
+
+        /* Role Selection Styling */
+        select {
+            cursor: pointer;
+            appearance: none;
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath fill='%23667eea' d='M1 0l5 6 5-6z'/%3E%3C/svg%3E");
+            background-repeat: no-repeat;
+            background-position: right 1rem center;
+        }
+
+        /* Password Toggles */
+        .password-wrapper {
+            position: relative;
+        }
+        .toggle-password {
+            position: absolute;
+            right: 12px;
+            top: 50%;
+            transform: translateY(-50%);
+            cursor: pointer;
+            color: var(--gray-600);
+            font-size: 1.2rem;
+            user-select: none;
+            background: none;
+            border: none;
+        }
+
+        /* Password Strength Meter */
+        .strength-meter {
+            height: 6px;
+            background: var(--gray-200);
+            border-radius: 3px;
+            margin-top: 0.5rem;
+            overflow: hidden;
+        }
+        .strength-fill {
+            height: 100%;
+            width: 0%;
+            transition: all 0.4s ease;
+            background: var(--danger);
+        }
+        .strength-fill.weak { width: 33%; background: var(--danger); }
+        .strength-fill.medium { width: 66%; background: var(--warning); }
+        .strength-fill.strong { width: 100%; background: var(--success); }
+
+        .strength-text {
+            font-size: 0.8rem;
+            margin-top: 0.4rem;
+            color: var(--gray-600);
+        }
+
+        /* Terms Checkbox */
+        .terms {
+            display: flex;
+            align-items: flex-start;
+            gap: 0.7rem;
+            margin: 1.5rem 0;
+            font-size: 0.9rem;
+            color: var(--gray-700);
+        }
+        .terms input[type="checkbox"] {
+            width: auto;
+            margin-top: 0.2rem;
+        }
+        .terms a {
+            color: var(--primary);
+            text-decoration: underline;
+        }
+
+        .btn {
+            width: 100%;
+            padding: 1.1rem;
+            background: var(--primary);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.6rem;
+        }
+        .btn:hover {
+            background: var(--primary-dark);
+            transform: translateY(-2px);
+            box-shadow: var(--shadow);
+        }
+
+        .error {
+            background: #fee2e2;
+            color: var(--danger);
+            padding: 1rem;
+            border-radius: 8px;
+            border-left: 4px solid var(--danger);
+            margin-bottom: 1.5rem;
+            font-size: 0.95rem;
+            text-align: center;
+        }
+
+        .success {
+            background: #dcfce7;
+            color: var(--success-dark);
+            padding: 1rem;
+            border-radius: 8px;
+            border-left: 4px solid var(--success);
+            margin-bottom: 1.5rem;
+            text-align: center;
+        }
+
+        .security-note {
+            background: linear-gradient(135deg, #f0f9ff, #e0f2fe);
+            padding: 1.2rem;
+            border-radius: 8px;
+            margin: 1.8rem 0;
+            font-size: 0.88rem;
+            color: var(--gray-700);
+            border-left: 4px solid var(--primary);
+        }
+        .security-note strong {
+            color: var(--primary);
+        }
+
+        .signup-footer {
+            text-align: center;
+            margin-top: 2rem;
+            padding-top: 1.5rem;
+            border-top: 1px solid var(--gray-200);
+            color: var(--gray-600);
+            font-size: 0.92rem;
+        }
+        .signup-footer a {
+            color: var(--primary);
+            font-weight: 600;
+            text-decoration: none;
+        }
+        .signup-footer a:hover {
+            text-decoration: underline;
+        }
+
+        /* Validation styles */
+        .validation-message {
+            font-size: 0.8rem;
+            margin-top: 0.4rem;
+            display: none;
+        }
+        .validation-message.error {
+            color: var(--danger);
+            display: block;
+        }
+        .validation-message.success {
+            color: var(--success);
+            display: block;
+        }
+        .input-error {
+            border-color: var(--danger) !important;
+        }
+        .input-success {
+            border-color: var(--success) !important;
+        }
+
+        @keyframes float {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        @keyframes fadeInUp {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .fade-in {
+            animation: fadeInUp 0.7s ease-out forwards;
+        }
+        
+        /* Responsive adjustments */
+        @media (max-width: 480px) {
+            .signup-container {
+                padding: 2rem 1.5rem;
+            }
+            .signup-header h1 {
+                font-size: 1.7rem;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="signup-container fade-in">
+        <div class="signup-header">
+            <div class="logo">🎓 UpSkillo</div>
+            <h1>Create Your Account</h1>
+            <p>Join thousands of cyber security learners & experts</p>
+        </div>
+        
+        <!-- Server-side messages -->
+        <% if (typeof error !== 'undefined' && error) { %>
+            <div class="error fade-in"><%= error %></div>
+        <% } %>
+        <% if (typeof success !== 'undefined' && success) { %>
+            <div class="success fade-in"><%= success %></div>
+        <% } %>
+
+        <form action="/signup" method="POST" id="signupForm" novalidate>
+            <div class="form-group">
+                <label for="name">Full Name</label>
+                <input type="text" id="name" name="name" required placeholder="John Doe" autofocus>
+                <div class="validation-message" id="nameError"></div>
+            </div>
+
+            <div class="form-group">
+                <label for="email">Email Address</label>
+                <input type="email" id="email" name="email" required placeholder="john@example.com">
+                <div class="validation-message" id="emailError"></div>
+            </div>
+
+            <div class="form-group">
+                <label for="password">Password</label>
+                <div class="password-wrapper">
+                    <input type="password" id="password" name="password" required placeholder="Create a strong password">
+                    <button type="button" class="toggle-password" aria-label="Toggle password visibility">👁️</button>
+                </div>
+                <div class="strength-meter"><div class="strength-fill" id="strengthFill"></div></div>
+                <div class="strength-text" id="strengthText">Password strength: Too weak</div>
+                <div class="validation-message" id="passwordError"></div>
+            </div>
+
+            <div class="form-group">
+                <label for="confirm_password">Confirm Password</label>
+                <div class="password-wrapper">
+                    <input type="password" id="confirm_password" name="confirm_password" required placeholder="Re-type your password">
+                    <button type="button" class="toggle-password" aria-label="Toggle password visibility">👁️</button>
+                </div>
+                <div class="validation-message" id="confirmPasswordError"></div>
+            </div>
+
+            <div class="form-group">
+                <label for="userType">I want to join as</label>
+                <select id="userType" name="userType" required>
+                    <option value="" disabled selected>Choose your role...</option>
+                    <option value="student">🧑‍🎓 Student (Learn Cyber Security)</option>
+                    <option value="teacher">👨‍🏫 Teacher / Expert (Teach & Earn)</option>
+                </select>
+                <div class="validation-message" id="roleError"></div>
+            </div>
+
+            <div class="terms">
+                <input type="checkbox" id="terms" required>
+                <label for="terms">
+                    I agree to the <a href="/terms" target="_blank">Terms of Service</a> and <a href="/privacy" target="_blank">Privacy Policy</a>
+                </label>
+                <div class="validation-message" id="termsError"></div>
+            </div>
+
+            <button type="submit" class="btn">
+                🚀 Create Free Account
+            </button>
+        </form>
+
+        <div class="security-note">
+            <strong>🔒 Your Security Matters:</strong><br>
+            • Passwords are hashed with bcrypt<br>
+            • All traffic encrypted with HTTPS/TLS<br>
+            • Email verification & rate limiting enabled<br>
+            • No data shared with third parties
+        </div>
+
+        <div class="signup-footer">
+            <p>Already have an account? <a href="/login">Login here</a></p>
+            <p><a href="/">← Back to Home</a></p>
+            <p style="margin-top: 1rem; font-size: 0.8rem; color: var(--gray-500);">
+                © 2025 UpSkillo • Built for Cyber Security Professionals
+            </p>
+        </div>
+    </div>
+
+    <script>
+        // Toggle password visibility
+        document.querySelectorAll('.toggle-password').forEach(button => {
+            button.addEventListener('click', function() {
+                const field = this.parentElement.querySelector('input');
+                if (field.type === 'password') {
+                    field.type = 'text';
+                    this.textContent = '🙈';
+                    this.setAttribute('aria-label', 'Hide password');
+                } else {
+                    field.type = 'password';
+                    this.textContent = '👁️';
+                    this.setAttribute('aria-label', 'Show password');
+                }
+            });
+        });
+
+        // Real-time Password Strength Checker
+        const passwordInput = document.getElementById('password');
+        const strengthFill = document.getElementById('strengthFill');
+        const strengthText = document.getElementById('strengthText');
+
+        passwordInput.addEventListener('input', function() {
+            const val = passwordInput.value;
+            let strength = 0;
+            let feedback = '';
+
+            if (val.length >= 8) strength++;
+            if (val.match(/[a-z]/) && val.match(/[A-Z]/)) strength++;
+            if (val.match(/[0-9]/)) strength++;
+            if (val.match(/[^a-zA-Z0-9]/)) strength++;
+
+            if (val.length === 0) {
+                feedback = "Enter a password";
+                strengthFill.className = 'strength-fill';
+            } else if (strength <= 1) {
+                feedback = "Too weak 😞";
+                strengthFill.className = 'strength-fill weak';
+            } else if (strength <= 2) {
+                feedback = "Weak – add numbers & symbols";
+                strengthFill.className = 'strength-fill weak';
+            } else if (strength <= 3) {
+                feedback = "Medium – getting better!";
+                strengthFill.className = 'strength-fill medium';
+            } else {
+                feedback = "Strong! 🔒 Excellent choice";
+                strengthFill.className = 'strength-fill strong';
+            }
+
+            strengthText.textContent = `Password strength: ${feedback}`;
+        });
+
+        // Form validation
+        const form = document.getElementById('signupForm');
+        const nameInput = document.getElementById('name');
+        const emailInput = document.getElementById('email');
+        const passwordInput = document.getElementById('password');
+        const confirmPasswordInput = document.getElementById('confirm_password');
+        const roleInput = document.getElementById('userType');
+        const termsInput = document.getElementById('terms');
+
+        // Validation functions
+        function validateName() {
+            const name = nameInput.value.trim();
+            const nameError = document.getElementById('nameError');
+            
+            if (name.length < 2) {
+                nameInput.classList.add('input-error');
+                nameInput.classList.remove('input-success');
+                nameError.textContent = 'Name must be at least 2 characters long';
+                nameError.className = 'validation-message error';
+                return false;
+            } else {
+                nameInput.classList.remove('input-error');
+                nameInput.classList.add('input-success');
+                nameError.textContent = '';
+                nameError.className = 'validation-message';
+                return true;
+            }
+        }
+
+        function validateEmail() {
+            const email = emailInput.value.trim();
+            const emailError = document.getElementById('emailError');
+            const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            
+            if (!emailRegex.test(email)) {
+                emailInput.classList.add('input-error');
+                emailInput.classList.remove('input-success');
+                emailError.textContent = 'Please enter a valid email address';
+                emailError.className = 'validation-message error';
+                return false;
+            } else {
+                emailInput.classList.remove('input-error');
+                emailInput.classList.add('input-success');
+                emailError.textContent = '';
+                emailError.className = 'validation-message';
+                return true;
+            }
+        }
+
+        function validatePassword() {
+            const password = passwordInput.value;
+            const passwordError = document.getElementById('passwordError');
+            
+            if (password.length < 8) {
+                passwordInput.classList.add('input-error');
+                passwordInput.classList.remove('input-success');
+                passwordError.textContent = 'Password must be at least 8 characters long';
+                passwordError.className = 'validation-message error';
+                return false;
+            } else {
+                passwordInput.classList.remove('input-error');
+                passwordInput.classList.add('input-success');
+                passwordError.textContent = '';
+                passwordError.className = 'validation-message';
+                return true;
+            }
+        }
+
+        function validateConfirmPassword() {
+            const password = passwordInput.value;
+            const confirmPassword = confirmPasswordInput.value;
+            const confirmPasswordError = document.getElementById('confirmPasswordError');
+            
+            if (password !== confirmPassword) {
+                confirmPasswordInput.classList.add('input-error');
+                confirmPasswordInput.classList.remove('input-success');
+                confirmPasswordError.textContent = 'Passwords do not match';
+                confirmPasswordError.className = 'validation-message error';
+                return false;
+            } else {
+                confirmPasswordInput.classList.remove('input-error');
+                confirmPasswordInput.classList.add('input-success');
+                confirmPasswordError.textContent = '';
+                confirmPasswordError.className = 'validation-message';
+                return true;
+            }
+        }
+
+        function validateRole() {
+            const role = roleInput.value;
+            const roleError = document.getElementById('roleError');
+            
+            if (!role) {
+                roleInput.classList.add('input-error');
+                roleInput.classList.remove('input-success');
+                roleError.textContent = 'Please select a role';
+                roleError.className = 'validation-message error';
+                return false;
+            } else {
+                roleInput.classList.remove('input-error');
+                roleInput.classList.add('input-success');
+                roleError.textContent = '';
+                roleError.className = 'validation-message';
+                return true;
+            }
+        }
+
+        function validateTerms() {
+            const termsError = document.getElementById('termsError');
+            
+            if (!termsInput.checked) {
+                termsError.textContent = 'You must agree to the terms and conditions';
+                termsError.className = 'validation-message error';
+                return false;
+            } else {
+                termsError.textContent = '';
+                termsError.className = 'validation-message';
+                return true;
+            }
+        }
+
+        // Real-time validation
+        nameInput.addEventListener('blur', validateName);
+        emailInput.addEventListener('blur', validateEmail);
+        passwordInput.addEventListener('blur', validatePassword);
+        confirmPasswordInput.addEventListener('blur', validateConfirmPassword);
+        roleInput.addEventListener('change', validateRole);
+        termsInput.addEventListener('change', validateTerms);
+
+        // Form submission
+        form.addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const isNameValid = validateName();
+            const isEmailValid = validateEmail();
+            const isPasswordValid = validatePassword();
+            const isConfirmPasswordValid = validateConfirmPassword();
+            const isRoleValid = validateRole();
+            const isTermsValid = validateTerms();
+            
+            if (isNameValid && isEmailValid && isPasswordValid && 
+                isConfirmPasswordValid && isRoleValid && isTermsValid) {
+                // Form is valid, you can submit it now
+                // In a real application, you would submit to the server
+                alert('Form is valid! In a real application, this would submit to the server.');
+                // form.submit(); // Uncomment this to actually submit the form
+            } else {
+                // Scroll to the first error
+                const firstError = document.querySelector('.validation-message.error');
+                if (firstError) {
+                    firstError.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                }
+            }
+        });
+    </script>
+</body>
+</html>

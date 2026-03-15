@@ -1,0 +1,600 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Add Content - UpSkillo</title>
+    <style>
+        :root {
+            --primary: #667eea;
+            --primary-dark: #5a6fd8;
+            --secondary: #764ba2;
+            --success: #10b981;
+            --success-dark: #059669;
+            --warning: #f59e0b;
+            --danger: #ef4444;
+            --gray-50: #f9fafb;
+            --gray-100: #f3f4f6;
+            --gray-200: #e5e7eb;
+            --gray-300: #d1d5db;
+            --gray-600: #4b5563;
+            --gray-700: #374151;
+            --gray-800: #1f2937;
+            --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+            --shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+            --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body { 
+            font-family: 'Inter', 'Segoe UI', Arial, sans-serif; 
+            background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%);
+            min-height: 100vh;
+            color: var(--gray-800);
+            line-height: 1.6;
+        }
+
+        .header { 
+            background: white; 
+            padding: 1.5rem 2rem; 
+            box-shadow: var(--shadow);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .header h1 {
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            font-size: 1.8rem;
+            font-weight: 700;
+        }
+
+        .user-info {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .role-badge {
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            color: white;
+            padding: 0.25rem 0.75rem;
+            border-radius: 20px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            text-transform: capitalize;
+        }
+
+        .nav { 
+            background: linear-gradient(135deg, var(--primary), var(--secondary)); 
+            padding: 1rem 2rem; 
+            box-shadow: var(--shadow);
+        }
+
+        .nav a { 
+            color: white; 
+            text-decoration: none; 
+            margin-right: 2rem;
+            font-weight: 500;
+            padding: 0.5rem 1rem;
+            border-radius: 8px;
+            transition: all 0.3s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .nav a:hover { 
+            background: rgba(255, 255, 255, 0.15);
+            transform: translateY(-1px);
+        }
+
+        .container { 
+            max-width: 800px; 
+            margin: 2rem auto; 
+            padding: 0 1.5rem;
+        }
+
+        .page-header {
+            margin-bottom: 2rem;
+            padding: 2rem;
+            background: white;
+            border-radius: 16px;
+            box-shadow: var(--shadow);
+            border-left: 4px solid var(--primary);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .page-header::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            right: 0;
+            width: 150px;
+            height: 150px;
+            background: linear-gradient(135deg, rgba(102, 126, 234, 0.1), rgba(118, 75, 162, 0.1));
+            border-radius: 50%;
+            transform: translate(50%, -50%);
+        }
+
+        .page-header h2 {
+            font-size: 2rem;
+            margin-bottom: 1rem;
+            color: var(--gray-800);
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+
+        .course-info {
+            background: linear-gradient(135deg, #f0f9ff, #e0f2fe);
+            padding: 1.5rem;
+            border-radius: 12px;
+            margin-bottom: 2rem;
+            border-left: 4px solid var(--primary);
+            box-shadow: var(--shadow);
+        }
+
+        .course-info h3 {
+            margin: 0 0 0.5rem 0;
+            color: var(--gray-800);
+            font-size: 1.3rem;
+        }
+
+        .course-info p {
+            margin: 0;
+            color: var(--gray-600);
+            line-height: 1.5;
+        }
+
+        .form-container { 
+            background: white; 
+            padding: 2.5rem; 
+            border-radius: 16px; 
+            box-shadow: var(--shadow);
+            margin-bottom: 2rem;
+            border-left: 4px solid var(--primary);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .form-container::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            right: 0;
+            width: 120px;
+            height: 120px;
+            background: linear-gradient(135deg, rgba(102, 126, 234, 0.05), rgba(118, 75, 162, 0.05));
+            border-radius: 50%;
+            transform: translate(50%, -50%);
+        }
+
+        .form-group { 
+            margin-bottom: 1.5rem; 
+            position: relative;
+        }
+
+        label { 
+            display: block; 
+            margin-bottom: 0.5rem; 
+            color: var(--gray-700);
+            font-weight: 600;
+            font-size: 0.95rem;
+        }
+
+        .required::after {
+            content: ' *';
+            color: var(--danger);
+        }
+
+        input, textarea { 
+            width: 100%; 
+            padding: 0.75rem 1rem; 
+            border: 2px solid var(--gray-200); 
+            border-radius: 8px; 
+            box-sizing: border-box;
+            font-size: 1rem;
+            font-family: 'Inter', sans-serif;
+            transition: all 0.3s ease;
+            background: white;
+        }
+
+        input:focus, textarea:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+            transform: translateY(-1px);
+        }
+
+        textarea {
+            height: 140px;
+            resize: vertical;
+            line-height: 1.5;
+        }
+
+        .btn { 
+            padding: 0.875rem 2rem; 
+            background: var(--primary); 
+            color: white; 
+            border: none; 
+            border-radius: 8px; 
+            font-size: 1rem; 
+            cursor: pointer; 
+            transition: all 0.3s ease;
+            font-weight: 600;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+            text-decoration: none;
+        }
+
+        .btn:hover { 
+            background: var(--primary-dark);
+            transform: translateY(-2px);
+            box-shadow: var(--shadow);
+        }
+
+        .btn-success {
+            background: var(--success);
+        }
+
+        .btn-success:hover {
+            background: var(--success-dark);
+        }
+
+        .btn-secondary {
+            background: var(--gray-600);
+        }
+
+        .btn-secondary:hover {
+            background: var(--gray-700);
+        }
+
+        .error { 
+            color: var(--danger); 
+            padding: 1rem 1.5rem;
+            background: #fef2f2;
+            border-radius: 8px;
+            margin-bottom: 1.5rem;
+            border-left: 4px solid var(--danger);
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-weight: 500;
+        }
+
+        .success { 
+            color: var(--success); 
+            padding: 1rem 1.5rem;
+            background: #f0fdf4;
+            border-radius: 8px;
+            margin-bottom: 1.5rem;
+            border-left: 4px solid var(--success);
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-weight: 500;
+        }
+
+        .form-actions {
+            display: flex;
+            gap: 1rem;
+            margin-top: 2rem;
+            padding-top: 1.5rem;
+            border-top: 1px solid var(--gray-200);
+            flex-wrap: wrap;
+        }
+
+        .form-actions .btn {
+            flex: 1;
+            min-width: 160px;
+        }
+
+        .input-hint {
+            color: var(--gray-500);
+            font-size: 0.85rem;
+            margin-top: 0.5rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .content-stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 1rem;
+            margin: 1.5rem 0;
+            padding: 1.5rem;
+            background: var(--gray-50);
+            border-radius: 8px;
+            border: 1px solid var(--gray-200);
+        }
+
+        .stat-item {
+            text-align: center;
+        }
+
+        .stat-value {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--primary);
+            display: block;
+        }
+
+        .stat-label {
+            color: var(--gray-600);
+            font-size: 0.8rem;
+            margin-top: 0.25rem;
+        }
+
+        .file-types {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+            gap: 0.5rem;
+            margin-top: 0.5rem;
+        }
+
+        .file-type {
+            background: var(--gray-100);
+            padding: 0.5rem;
+            border-radius: 6px;
+            text-align: center;
+            font-size: 0.8rem;
+            color: var(--gray-700);
+            border: 1px solid var(--gray-200);
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .fade-in {
+            animation: fadeIn 0.6s ease-out;
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 0 1rem;
+            }
+            
+            .nav {
+                padding: 1rem;
+                overflow-x: auto;
+            }
+            
+            .nav a {
+                margin-right: 1rem;
+                font-size: 0.9rem;
+            }
+            
+            .form-actions {
+                flex-direction: column;
+            }
+            
+            .form-actions .btn {
+                width: 100%;
+            }
+            
+            .page-header {
+                padding: 1.5rem;
+            }
+            
+            .page-header h2 {
+                font-size: 1.75rem;
+            }
+            
+            .form-container {
+                padding: 2rem 1.5rem;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .header {
+                padding: 1rem 1.5rem;
+                flex-direction: column;
+                gap: 1rem;
+                text-align: center;
+            }
+            
+            .user-info {
+                flex-direction: column;
+                gap: 0.5rem;
+            }
+            
+            .page-header h2 {
+                font-size: 1.5rem;
+            }
+            
+            .content-stats {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>🎓 UpSkillo</h1>
+        <div class="user-info">
+            <span>Welcome, <strong><%= user.name %></strong> <span class="role-badge"><%= user.type %></span></span>
+            <a href="/logout" class="btn btn-outline" style="padding: 0.5rem 1rem; font-size: 0.85rem;">🚪 Logout</a>
+        </div>
+    </div>
+    
+    <div class="nav">
+        <a href="/dashboard">📊 Dashboard</a>
+        <a href="/courses">📚 Browse Courses</a>
+        <a href="/create-course">✨ Create Course</a>
+        <a href="/my-courses">📖 My Courses</a>
+    </div>
+    
+    <div class="container">
+        <div class="page-header fade-in">
+            <h2>📝 Add New Content</h2>
+            <p>Expand your course with engaging and informative learning materials</p>
+        </div>
+
+        <div class="course-info fade-in">
+            <h3><%= course.title %></h3>
+            <p><%= course.description %></p>
+            
+            <div class="content-stats">
+                <div class="stat-item">
+                    <span class="stat-value"><%= course.content_count || 0 %></span>
+                    <span class="stat-label">Current Content</span>
+                </div>
+                <div class="stat-item">
+                    <span class="stat-value"><%= course.enrollment_count || 0 %></span>
+                    <span class="stat-label">Enrolled Students</span>
+                </div>
+                <div class="stat-item">
+                    <span class="stat-value">
+                        <% if (course.avg_rating) { %>
+                            <%= parseFloat(course.avg_rating).toFixed(1) %>⭐
+                        <% } else { %>
+                            N/A
+                        <% } %>
+                    </span>
+                    <span class="stat-label">Course Rating</span>
+                </div>
+            </div>
+        </div>
+        
+        <% if (error) { %>
+            <div class="error fade-in">
+                ⚠️ <%= error %>
+            </div>
+        <% } %>
+        
+        <% if (success) { %>
+            <div class="success fade-in">
+                ✅ <%= success %>
+            </div>
+        <% } %>
+        
+        <div class="form-container fade-in">
+            <form action="/add-lesson/<%= course.id %>" method="POST" id="contentForm">
+                <div class="form-group">
+                    <label for="lesson_title" class="required">Content Title</label>
+                    <input type="text" id="lesson_title" name="lesson_title" required 
+                           placeholder="Enter an engaging content title (e.g., 'Introduction to HTML Basics')"
+                           maxlength="255">
+                    <div class="input-hint">🎯 Make it clear and descriptive to guide students</div>
+                </div>
+                
+                <div class="form-group">
+                    <label for="description">Content Description</label>
+                    <textarea id="description" name="description" 
+                              placeholder="Describe what students will learn in this content, key concepts covered, and learning objectives..."></textarea>
+                    <div class="input-hint">📝 Help students understand what they'll achieve with this content</div>
+                </div>
+                
+                <div class="form-group">
+                    <label for="filename">Learning Resources</label>
+                    <input type="text" id="filename" name="filename" 
+                           placeholder="Enter file names or resource links (e.g., video.mp4, slides.pdf, assignment.zip)">
+                    <div class="input-hint">📎 Include all necessary materials for this content</div>
+                    <div class="file-types">
+                        <div class="file-type">🎥 Video</div>
+                        <div class="file-type">📄 PDF</div>
+                        <div class="file-type">💻 Code</div>
+                        <div class="file-type">📊 Slides</div>
+                    </div>
+                </div>
+                
+                <div class="form-actions">
+                    <button type="submit" class="btn btn-success">
+                        ➕ Add Content
+                    </button>
+                    <a href="/my-courses" class="btn btn-secondary">
+                        📖 My Courses
+                    </a>
+                    <a href="/create-course" class="btn" style="background: var(--primary);">
+                        ✨ New Course
+                    </a>
+                </div>
+            </form>
+        </div>
+
+        <div class="course-info fade-in">
+            <h3>💡 Content Creation Tips</h3>
+            <div style="display: grid; gap: 1rem;">
+                <div>
+                    <strong>🎯 Clear Learning Objectives:</strong> Each content piece should have specific, measurable goals that students can achieve.
+                </div>
+                <div>
+                    <strong>📚 Structured Material:</strong> Break down complex topics into digestible chunks with logical progression.
+                </div>
+                <div>
+                    <strong>🎥 Multimedia Support:</strong> Include videos, slides, and downloadable resources to enhance learning.
+                </div>
+                <div>
+                    <strong>📝 Varied Formats:</strong> Mix different content types (videos, readings, exercises) to keep students engaged.
+                </div>
+                <div>
+                    <strong>💬 Engagement:</strong> Consider adding discussion points or questions to encourage student interaction.
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Add character counter for content title
+            const titleInput = document.getElementById('lesson_title');
+            const titleCounter = document.createElement('div');
+            titleCounter.className = 'input-hint';
+            titleCounter.innerHTML = '📝 <span id="titleCount">0</span>/255 characters';
+            titleInput.parentNode.appendChild(titleCounter);
+
+            titleInput.addEventListener('input', function() {
+                document.getElementById('titleCount').textContent = this.value.length;
+            });
+
+            // Add character counter for description
+            const descInput = document.getElementById('description');
+            const descCounter = document.createElement('div');
+            descCounter.className = 'input-hint';
+            descCounter.innerHTML = '📝 <span id="descCount">0</span> characters';
+            descInput.parentNode.appendChild(descCounter);
+
+            descInput.addEventListener('input', function() {
+                document.getElementById('descCount').textContent = this.value.length;
+            });
+
+            // Form validation
+            const form = document.getElementById('contentForm');
+            form.addEventListener('submit', function(e) {
+                const title = titleInput.value.trim();
+                if (!title) {
+                    e.preventDefault();
+                    alert('⚠️ Please enter a content title.');
+                    titleInput.focus();
+                }
+            });
+
+            // Add animation to form elements
+            const formElements = document.querySelectorAll('.form-group');
+            formElements.forEach((element, index) => {
+                element.style.animationDelay = `${index * 0.1}s`;
+            });
+
+            // Auto-focus on title input
+            titleInput.focus();
+        });
+    </script>
+</body>
+</html>

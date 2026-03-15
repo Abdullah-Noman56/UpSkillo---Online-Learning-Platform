@@ -1,0 +1,811 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>UpSkillo - Learn Skills That Matter</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #667eea;
+            --primary-dark: #5a6fd8;
+            --secondary: #764ba2;
+            --accent: #f093fb;
+            --neon: #00f5ff;
+            --success: #10b981;
+            --warning: #f59e0b;
+            --danger: #ef4444;
+            --dark: #0f172a;
+            --dark-light: #1e293b;
+            --gray-50: #f9fafb;
+            --gray-100: #f3f4f6;
+            --gray-200: #e5e7eb;
+            --gray-300: #d1d5db;
+            --gray-600: #4b5563;
+            --gray-700: #374151;
+            --gray-800: #1f2937;
+            --gray-900: #111827;
+            --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+            --shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+            --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0.05);
+            --glow: 0 0 20px rgba(102, 126, 234, 0.7);
+            --radius: 12px;
+        }
+
+        * { 
+            margin: 0; 
+            padding: 0; 
+            box-sizing: border-box; 
+        }
+        
+        html {
+            scroll-behavior: smooth;
+        }
+        
+        body {
+            font-family: 'Inter', 'Segoe UI', Arial, sans-serif;
+            background: linear-gradient(135deg, var(--dark) 0%, var(--dark-light) 100%);
+            color: var(--gray-100);
+            line-height: 1.6;
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+
+        /* 3D Background Elements */
+        .bg-elements {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            overflow: hidden;
+        }
+        
+        .floating-shape {
+            position: absolute;
+            border-radius: 50%;
+            background: radial-gradient(circle, rgba(102, 126, 234, 0.15) 0%, transparent 70%);
+            filter: blur(40px);
+            opacity: 0.7;
+        }
+        
+        .shape-1 {
+            width: 600px;
+            height: 600px;
+            top: -200px;
+            left: -200px;
+            animation: float-1 25s infinite linear;
+        }
+        
+        .shape-2 {
+            width: 400px;
+            height: 400px;
+            bottom: -100px;
+            right: -100px;
+            animation: float-2 20s infinite linear reverse;
+        }
+        
+        .shape-3 {
+            width: 300px;
+            height: 300px;
+            top: 50%;
+            left: 80%;
+            animation: float-3 15s infinite linear;
+        }
+
+        /* Header / Navigation */
+        .header {
+            background: rgba(15, 23, 42, 0.8);
+            backdrop-filter: blur(20px);
+            padding: 1rem 2rem;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 1000;
+            box-shadow: var(--shadow);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .logo {
+            font-size: 1.8rem;
+            font-weight: 700;
+            background: linear-gradient(135deg, var(--primary), var(--accent));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        
+        .logo-3d {
+            font-size: 2rem;
+            transform: translateZ(10px);
+            filter: drop-shadow(0 0 10px rgba(102, 126, 234, 0.5));
+        }
+        
+        .nav-links {
+            display: flex;
+            gap: 2rem;
+        }
+        
+        .nav-links a {
+            color: var(--gray-300);
+            text-decoration: none;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+        
+        .nav-links a:hover {
+            color: white;
+        }
+        
+        .nav-links a::after {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: linear-gradient(90deg, var(--primary), var(--accent));
+            transition: width 0.3s ease;
+        }
+        
+        .nav-links a:hover::after {
+            width: 100%;
+        }
+        
+        .header-actions {
+            display: flex;
+            gap: 1rem;
+        }
+
+        /* Buttons */
+        .btn {
+            padding: 0.75rem 1.5rem;
+            border-radius: 8px;
+            font-weight: 500;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            transition: all 0.3s ease;
+            cursor: pointer;
+            font-size: 0.95rem;
+            border: none;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+            transition: left 0.5s;
+        }
+        
+        .btn:hover::before {
+            left: 100%;
+        }
+        
+        .btn-primary {
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            color: white;
+            box-shadow: 0 4px 15px rgba(102, 126, 234, 0.4);
+        }
+        
+        .btn-primary:hover { 
+            transform: translateY(-3px); 
+            box-shadow: 0 8px 25px rgba(102, 126, 234, 0.6);
+        }
+        
+        .btn-secondary {
+            background: rgba(255, 255, 255, 0.1);
+            color: white;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            backdrop-filter: blur(10px);
+        }
+        
+        .btn-secondary:hover { 
+            background: rgba(255, 255, 255, 0.15);
+            transform: translateY(-3px);
+        }
+
+        /* Hero Section */
+        .hero {
+            padding: 160px 2rem 100px;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .hero-content {
+            max-width: 900px;
+            position: relative;
+            z-index: 2;
+        }
+        
+        .hero h1 {
+            font-size: 4rem;
+            font-weight: 800;
+            margin-bottom: 1.5rem;
+            background: linear-gradient(135deg, var(--primary), var(--accent), var(--neon));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            line-height: 1.2;
+            text-shadow: 0 0 30px rgba(102, 126, 234, 0.3);
+        }
+        
+        .hero p {
+            font-size: 1.4rem;
+            color: var(--gray-300);
+            max-width: 700px;
+            margin: 0 auto 3rem;
+            line-height: 1.6;
+        }
+        
+        .hero-actions {
+            display: flex;
+            gap: 1.5rem;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+        
+        .hero-badge {
+            display: inline-block;
+            margin-top: 2rem;
+            padding: 0.5rem 1.5rem;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 50px;
+            font-size: 0.9rem;
+            color: var(--gray-300);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+        }
+
+        /* Interactive 3D Logo in Hero */
+        .hero-logo {
+            width: 200px;
+            height: 200px;
+            margin: 0 auto 3rem;
+            position: relative;
+            transform-style: preserve-3d;
+            animation: logo-float 6s ease-in-out infinite;
+        }
+        
+        .logo-3d-main {
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            border-radius: 30px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 
+                0 0 30px rgba(102, 126, 234, 0.8),
+                inset 0 0 30px rgba(255, 255, 255, 0.2);
+            transform-style: preserve-3d;
+            transform: rotateX(15deg) rotateY(15deg);
+            transition: transform 0.5s ease;
+        }
+        
+        .logo-3d-main:hover {
+            transform: rotateX(0deg) rotateY(0deg) scale(1.05);
+        }
+        
+        .logo-text {
+            font-size: 2rem;
+            font-weight: 800;
+            color: white;
+            transform: translateZ(30px);
+        }
+
+        /* Features */
+        .features {
+            padding: 6rem 2rem;
+            background: rgba(15, 23, 42, 0.7);
+            position: relative;
+        }
+        
+        .container { 
+            max-width: 1200px; 
+            margin: 0 auto; 
+        }
+        
+        .section-title {
+            text-align: center;
+            font-size: 2.5rem;
+            margin-bottom: 4rem;
+            color: white;
+            position: relative;
+        }
+        
+        .section-title::after {
+            content: '';
+            position: absolute;
+            bottom: -15px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 80px;
+            height: 4px;
+            background: linear-gradient(90deg, var(--primary), var(--accent));
+            border-radius: 2px;
+        }
+        
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 2.5rem;
+        }
+        
+        .feature-card {
+            background: rgba(255, 255, 255, 0.05);
+            padding: 2.5rem 2rem;
+            border-radius: var(--radius);
+            text-align: center;
+            box-shadow: var(--shadow);
+            transition: all 0.4s ease;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .feature-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 4px;
+            background: linear-gradient(90deg, var(--primary), var(--accent));
+            transform: scaleX(0);
+            transform-origin: left;
+            transition: transform 0.4s ease;
+        }
+        
+        .feature-card:hover {
+            transform: translateY(-15px);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+            border-color: rgba(102, 126, 234, 0.3);
+        }
+        
+        .feature-card:hover::before {
+            transform: scaleX(1);
+        }
+        
+        .feature-icon {
+            font-size: 3.5rem;
+            margin-bottom: 1.5rem;
+            display: inline-block;
+            transform: translateZ(0);
+            transition: transform 0.3s ease;
+        }
+        
+        .feature-card:hover .feature-icon {
+            transform: scale(1.2) translateZ(10px);
+        }
+        
+        .feature-card h3 {
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+            color: white;
+        }
+        
+        .feature-card p {
+            color: var(--gray-300);
+            line-height: 1.6;
+        }
+
+        /* Stats / Trust */
+        .stats {
+            padding: 5rem 2rem;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            color: white;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .stats::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" preserveAspectRatio="none"><path d="M0,0 L100,0 L100,100 Z" fill="rgba(255,255,255,0.1)"/></svg>');
+            background-size: cover;
+        }
+        
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 3rem;
+            max-width: 1000px;
+            margin: 0 auto;
+            position: relative;
+            z-index: 2;
+        }
+        
+        .stat-item {
+            padding: 2rem;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: var(--radius);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            transition: transform 0.3s ease;
+        }
+        
+        .stat-item:hover {
+            transform: translateY(-10px);
+        }
+        
+        .stat-big {
+            font-size: 3.5rem;
+            font-weight: 800;
+            margin-bottom: 0.5rem;
+            background: linear-gradient(135deg, white, #e2e8f0);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        
+        .stat-label { 
+            font-size: 1.1rem; 
+            opacity: 0.9; 
+            font-weight: 500;
+        }
+
+        /* CTA Section */
+        .cta {
+            padding: 8rem 2rem;
+            text-align: center;
+            background: rgba(15, 23, 42, 0.9);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .cta h2 {
+            font-size: 3rem;
+            margin-bottom: 1.5rem;
+            color: white;
+        }
+        
+        .cta p {
+            color: var(--gray-300);
+            font-size: 1.3rem;
+            max-width: 600px;
+            margin: 0 auto 3rem;
+            line-height: 1.6;
+        }
+        
+        .cta-bg {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: radial-gradient(circle at center, rgba(102, 126, 234, 0.2) 0%, transparent 70%);
+            z-index: -1;
+        }
+
+        /* Footer */
+        .footer {
+            background: var(--dark);
+            color: white;
+            padding: 4rem 2rem 2rem;
+            text-align: center;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .footer-links {
+            display: flex;
+            justify-content: center;
+            gap: 2rem;
+            margin-bottom: 2rem;
+            flex-wrap: wrap;
+        }
+        
+        .footer a { 
+            color: var(--gray-300); 
+            text-decoration: none; 
+            transition: color 0.3s ease;
+        }
+        
+        .footer a:hover { 
+            color: white; 
+        }
+        
+        .copyright {
+            color: var(--gray-500);
+            font-size: 0.9rem;
+            margin-top: 2rem;
+        }
+
+        /* Animations */
+        @keyframes float-1 {
+            0% { transform: translate(0, 0) rotate(0deg); }
+            100% { transform: translate(100px, 50px) rotate(360deg); }
+        }
+        
+        @keyframes float-2 {
+            0% { transform: translate(0, 0) rotate(0deg); }
+            100% { transform: translate(-80px, -30px) rotate(-360deg); }
+        }
+        
+        @keyframes float-3 {
+            0% { transform: translate(0, 0) rotate(0deg); }
+            100% { transform: translate(-50px, 80px) rotate(180deg); }
+        }
+        
+        @keyframes logo-float {
+            0%, 100% { transform: translateY(0) rotateX(5deg) rotateY(5deg); }
+            50% { transform: translateY(-20px) rotateX(5deg) rotateY(5deg); }
+        }
+        
+        @keyframes fadeInUp {
+            from { opacity: 0; transform: translateY(30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        .fade-in-up {
+            animation: fadeInUp 0.8s ease-out forwards;
+        }
+        
+        /* Particle System */
+        .particles {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+        }
+        
+        .particle {
+            position: absolute;
+            width: 4px;
+            height: 4px;
+            background: var(--neon);
+            border-radius: 50%;
+            box-shadow: 0 0 10px var(--neon);
+            animation: particle-float 6s infinite linear;
+        }
+        
+        @keyframes particle-float {
+            0% {
+                transform: translateY(100vh) translateX(0);
+                opacity: 0;
+            }
+            10% {
+                opacity: 1;
+            }
+            90% {
+                opacity: 1;
+            }
+            100% {
+                transform: translateY(-100px) translateX(20px);
+                opacity: 0;
+            }
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .hero h1 { font-size: 2.8rem; }
+            .hero-actions { flex-direction: column; align-items: center; }
+            .btn { width: 100%; max-width: 300px; justify-content: center; }
+            .nav-links { display: none; }
+            .header { padding: 1rem; }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- 3D Background Elements -->
+    <div class="bg-elements">
+        <div class="floating-shape shape-1"></div>
+        <div class="floating-shape shape-2"></div>
+        <div class="floating-shape shape-3"></div>
+        <div class="particles" id="particles"></div>
+    </div>
+
+    <!-- Fixed Header -->
+    <header class="header">
+        <div class="logo">
+            <span class="logo-3d">🎓</span> UpSkillo
+        </div>
+        
+        <nav class="nav-links">
+            <a href="#features">Features</a>
+            <a href="#courses">Courses</a>
+            <a href="#pricing">Pricing</a>
+            <a href="#about">About</a>
+        </nav>
+        
+        <div class="header-actions">
+            <a href="/login" class="btn btn-secondary">Login</a>
+            <a href="/signup" class="btn btn-primary">Sign Up Free</a>
+        </div>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="hero-content">
+            <div class="hero-logo">
+                <div class="logo-3d-main">
+                    <div class="logo-text">UpSkillo</div>
+                </div>
+            </div>
+            
+            <h1 class="fade-in-up">Master Skills That Shape The Future</h1>
+            <p class="fade-in-up" style="animation-delay: 0.2s;">
+                Join thousands of learners mastering Cyber Security, Web Development, Cloud, Ethical Hacking and more — with cutting-edge courses created by industry leaders.
+            </p>
+            <div class="hero-actions fade-in-up" style="animation-delay: 0.4s;">
+                <a href="/signup" class="btn btn-primary" style="font-size: 1.1rem; padding: 1rem 2rem;">🚀 Start Learning for Free</a>
+                <a href="/courses" class="btn btn-secondary" style="font-size: 1.1rem; padding: 1rem 2rem;">Explore Courses →</a>
+            </div>
+            <div class="hero-badge fade-in-up" style="animation-delay: 0.6s;">
+                🎉 Join 10,000+ students already learning on UpSkillo
+            </div>
+        </div>
+    </section>
+
+    <!-- Features -->
+    <section class="features" id="features">
+        <div class="container">
+            <h2 class="section-title fade-in-up">Why UpSkillo Stands Out</h2>
+            <div class="features-grid">
+                <div class="feature-card fade-in-up" style="animation-delay: 0.1s;">
+                    <div class="feature-icon">🛡️</div>
+                    <h3>Real-World Cyber Security</h3>
+                    <p>Learn penetration testing, network security, cryptography, and ethical hacking from active professionals in live environments.</p>
+                </div>
+                <div class="feature-card fade-in-up" style="animation-delay: 0.2s;">
+                    <div class="feature-icon">⚡</div>
+                    <h3>Immersive Hands-on Labs</h3>
+                    <p>Practice in safe virtual labs with Kali, Metasploit, Wireshark, Burp Suite and more. No setup required.</p>
+                </div>
+                <div class="feature-card fade-in-up" style="animation-delay: 0.3s;">
+                    <div class="feature-icon">🏆</div>
+                    <h3>Industry-Recognized Certificates</h3>
+                    <p>Earn shareable certificates recognized by employers and add them directly to your LinkedIn profile.</p>
+                </div>
+                <div class="feature-card fade-in-up" style="animation-delay: 0.4s;">
+                    <div class="feature-icon">👥</div>
+                    <h3>Learn from Practitioners</h3>
+                    <p>Courses taught by certified ethical hackers, CISSPs, OSCP holders, and red team experts with real-world experience.</p>
+                </div>
+                <div class="feature-card fade-in-up" style="animation-delay: 0.5s;">
+                    <div class="feature-icon">💻</div>
+                    <h3>Learn Anywhere, Anytime</h3>
+                    <p>Access courses on desktop, tablet, or mobile. Download videos for offline learning and progress at your own pace.</p>
+                </div>
+                <div class="feature-card fade-in-up" style="animation-delay: 0.6s;">
+                    <div class="feature-icon">🔔</div>
+                    <h3>Lifetime Access & Updates</h3>
+                    <p>One-time enrollment grants lifetime access including all future updates, new lessons, and community features.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Trust Stats -->
+    <section class="stats">
+        <div class="container">
+            <div class="stats-grid">
+                <div class="stat-item fade-in-up" style="animation-delay: 0.1s;">
+                    <div class="stat-big">10,000+</div>
+                    <div class="stat-label">Active Students</div>
+                </div>
+                <div class="stat-item fade-in-up" style="animation-delay: 0.2s;">
+                    <div class="stat-big">150+</div>
+                    <div class="stat-label">Expert Courses</div>
+                </div>
+                <div class="stat-item fade-in-up" style="animation-delay: 0.3s;">
+                    <div class="stat-big">4.9 ⭐</div>
+                    <div class="stat-label">Average Rating</div>
+                </div>
+                <div class="stat-item fade-in-up" style="animation-delay: 0.4s;">
+                    <div class="stat-big">50,000+</div>
+                    <div class="stat-label">Certificates Issued</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Final CTA -->
+    <section class="cta">
+        <div class="cta-bg"></div>
+        <div class="container">
+            <h2 class="fade-in-up">Ready to Transform Your Career?</h2>
+            <p class="fade-in-up" style="animation-delay: 0.2s;">Join UpSkillo today and get unlimited access to all courses, labs, and our thriving community.</p>
+            <div style="animation-delay: 0.4s;" class="fade-in-up">
+                <a href="/signup" class="btn btn-primary" style="font-size: 1.2rem; padding: 1rem 2.5rem;">Start Your Journey →</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-links">
+                <a href="#">Privacy Policy</a> • 
+                <a href="#">Terms of Service</a> • 
+                <a href="#">Contact</a> •
+                <a href="#">Careers</a> •
+                <a href="#">Blog</a>
+            </div>
+            <p class="copyright">&copy; 2025 UpSkillo. All rights reserved. Built for the next generation of cyber security professionals.</p>
+        </div>
+    </footer>
+
+    <script>
+        // Create particles
+        const particlesContainer = document.getElementById('particles');
+        const particleCount = 50;
+        
+        for (let i = 0; i < particleCount; i++) {
+            const particle = document.createElement('div');
+            particle.classList.add('particle');
+            
+            // Random position and animation
+            const left = Math.random() * 100;
+            const size = 2 + Math.random() * 3;
+            const duration = 4 + Math.random() * 4;
+            const delay = Math.random() * 5;
+            
+            particle.style.left = `${left}%`;
+            particle.style.width = `${size}px`;
+            particle.style.height = `${size}px`;
+            particle.style.animationDuration = `${duration}s`;
+            particle.style.animationDelay = `${delay}s`;
+            
+            particlesContainer.appendChild(particle);
+        }
+        
+        // Interactive 3D logo effect
+        const logo3d = document.querySelector('.logo-3d-main');
+        
+        document.addEventListener('mousemove', (e) => {
+            const x = (e.clientX / window.innerWidth) * 20 - 10;
+            const y = (e.clientY / window.innerHeight) * 20 - 10;
+            
+            logo3d.style.transform = `rotateX(${15 - y}deg) rotateY(${15 + x}deg)`;
+        });
+        
+        // Scroll animations
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -50px 0px'
+        };
+        
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.style.opacity = '1';
+                    entry.target.style.transform = 'translateY(0)';
+                }
+            });
+        }, observerOptions);
+        
+        // Observe all fade-in-up elements
+        document.querySelectorAll('.fade-in-up').forEach(el => {
+            observer.observe(el);
+        });
+    </script>
+</body>
+</html>

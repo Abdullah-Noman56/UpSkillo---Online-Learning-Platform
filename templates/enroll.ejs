@@ -1,0 +1,441 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Enroll in <%= course.title %> - UpSkillo</title>
+    <style>
+        :root {
+            --primary: #667eea;
+            --primary-dark: #5a6fd8;
+            --secondary: #764ba2;
+            --success: #10b981;
+            --success-dark: #059669;
+            --warning: #f59e0b;
+            --danger: #ef4444;
+            --gray-50: #f9fafb;
+            --gray-100: #f3f4f6;
+            --gray-200: #e5e7eb;
+            --gray-300: #d1d5db;
+            --gray-600: #4b5563;
+            --gray-700: #374151;
+            --gray-800: #1f2937;
+            --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+            --shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+            --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body { 
+            font-family: 'Inter', 'Segoe UI', Arial, sans-serif; 
+            background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%);
+            min-height: 100vh;
+            color: var(--gray-800);
+            line-height: 1.6;
+        }
+
+        .header { 
+            background: white; 
+            padding: 1.5rem 2rem; 
+            box-shadow: var(--shadow);
+        }
+
+        .nav { 
+            background: linear-gradient(135deg, var(--primary), var(--secondary)); 
+            padding: 1rem 2rem; 
+            box-shadow: var(--shadow);
+        }
+
+        .nav a { 
+            color: white; 
+            text-decoration: none; 
+            margin-right: 2rem;
+            font-weight: 500;
+            padding: 0.5rem 1rem;
+            border-radius: 8px;
+            transition: all 0.3s ease;
+        }
+
+        .nav a:hover { 
+            background: rgba(255, 255, 255, 0.15);
+            transform: translateY(-1px);
+        }
+
+        .container { 
+            max-width: 1000px; 
+            margin: 2rem auto; 
+            padding: 0 1.5rem;
+            display: flex;
+            gap: 2rem;
+        }
+
+        .course-info { 
+            flex: 1; 
+            background: white; 
+            padding: 2rem; 
+            border-radius: 12px; 
+            box-shadow: var(--shadow);
+            border-left: 4px solid var(--primary);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .course-info::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            right: 0;
+            width: 120px;
+            height: 120px;
+            background: linear-gradient(135deg, rgba(102, 126, 234, 0.1), rgba(118, 75, 162, 0.1));
+            border-radius: 50%;
+            transform: translate(50%, -50%);
+        }
+
+        .payment-form { 
+            flex: 1; 
+            background: white; 
+            padding: 2rem; 
+            border-radius: 12px; 
+            box-shadow: var(--shadow);
+            border-left: 4px solid var(--success);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .payment-form::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            right: 0;
+            width: 120px;
+            height: 120px;
+            background: linear-gradient(135deg, rgba(16, 185, 129, 0.1), rgba(5, 150, 105, 0.1));
+            border-radius: 50%;
+            transform: translate(50%, -50%);
+        }
+
+        .form-group { 
+            margin-bottom: 1.5rem; 
+        }
+
+        label { 
+            display: block; 
+            margin-bottom: 0.5rem; 
+            color: var(--gray-700);
+            font-weight: 600;
+        }
+
+        input, select { 
+            width: 100%; 
+            padding: 0.75rem; 
+            border: 2px solid var(--gray-200); 
+            border-radius: 8px; 
+            font-size: 1rem; 
+            box-sizing: border-box;
+            transition: all 0.3s ease;
+            background: white;
+        }
+
+        input:focus, select:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+            transform: translateY(-1px);
+        }
+
+        .btn { 
+            padding: 1rem 2rem; 
+            background: var(--success); 
+            color: white; 
+            border: none; 
+            border-radius: 8px; 
+            font-size: 1.1rem; 
+            cursor: pointer; 
+            width: 100%;
+            transition: all 0.3s ease;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+        }
+
+        .btn:hover { 
+            background: var(--success-dark);
+            transform: translateY(-2px);
+            box-shadow: var(--shadow);
+        }
+
+        .error { 
+            color: var(--danger); 
+            padding: 1rem 1.5rem; 
+            background: #fef2f2; 
+            border-radius: 8px; 
+            margin-bottom: 1.5rem;
+            border-left: 4px solid var(--danger);
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-weight: 500;
+        }
+
+        .amount-input {
+            position: relative;
+        }
+
+        .amount-input::before {
+            content: '$';
+            position: absolute;
+            left: 12px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--gray-600);
+            font-weight: 600;
+            z-index: 1;
+        }
+
+        .amount-input input {
+            padding-left: 2rem;
+        }
+
+        .card-row {
+            display: flex;
+            gap: 1rem;
+        }
+
+        .card-row > div {
+            flex: 1;
+        }
+
+        .security-badge {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+            margin: 1rem 0;
+            padding: 1rem;
+            background: var(--gray-50);
+            border-radius: 8px;
+            border: 1px solid var(--gray-200);
+            color: var(--gray-600);
+            font-size: 0.9rem;
+        }
+
+        .benefits-list {
+            list-style: none;
+            padding: 0;
+            margin: 1.5rem 0;
+        }
+
+        .benefits-list li {
+            padding: 0.5rem 0;
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            color: var(--gray-700);
+        }
+
+        .benefits-list li::before {
+            content: '✅';
+            font-size: 1.1rem;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .fade-in {
+            animation: fadeIn 0.6s ease-out;
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                flex-direction: column;
+                padding: 0 1rem;
+            }
+            
+            .nav {
+                padding: 1rem;
+            }
+            
+            .nav a {
+                margin-right: 1rem;
+                font-size: 0.9rem;
+            }
+            
+            .card-row {
+                flex-direction: column;
+                gap: 0;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1 style="margin: 0; background: linear-gradient(135deg, var(--primary), var(--secondary)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; font-size: 1.8rem; font-weight: 700;">🎓 UpSkillo</h1>
+    </div>
+    
+    <div class="nav">
+        <a href="/dashboard">📊 Dashboard</a>
+        <a href="/courses">📚 Browse Courses</a>
+        <a href="/my-learning">🎓 My Learning</a>
+    </div>
+    
+    <div class="container">
+        <div class="course-info fade-in">
+            <h2 style="margin-bottom: 1rem; color: var(--gray-800);"><%= course.title %></h2>
+            <p style="color: var(--gray-600); line-height: 1.6; margin: 1rem 0;"><%= course.description %></p>
+            
+            <div style="margin: 1.5rem 0;">
+                <p><strong>👨‍🏫 Teacher:</strong> <%= course.teacher_name %></p>
+                <p><strong>📂 Category:</strong> <%= course.category %></p>
+                <% if (course.avg_rating) { %>
+                    <p><strong>⭐ Rating:</strong> <%= parseFloat(course.avg_rating).toFixed(1) %>/5 (<%= course.review_count || 0 %> reviews)</p>
+                <% } %>
+            </div>
+
+            <h3 style="color: var(--primary); margin: 1.5rem 0 1rem 0;">🎯 What's Included</h3>
+            <ul class="benefits-list">
+                <li>Lifetime access to all course content</li>
+                <li>Comprehensive learning materials</li>
+                <li>Interactive learning experience</li>
+                <li>Progress tracking and completion certificate</li>
+                <li>Access to course discussions and community</li>
+                <li>Direct Q&A support with the teacher</li>
+            </ul>
+        </div>
+        
+        <div class="payment-form fade-in">
+            <h2 style="margin-bottom: 1.5rem; color: var(--gray-800); display: flex; align-items: center; gap: 0.5rem;">
+                💳 Complete Enrollment
+            </h2>
+            
+            <% if (error) { %>
+                <div class="error">⚠️ <%= error %></div>
+            <% } %>
+            
+            <form action="/process-enrollment" method="POST">
+                <input type="hidden" name="course_id" value="<%= course.id %>">
+                
+                <div class="form-group">
+                    <label>💰 Course Fee Amount</label>
+                    <div class="amount-input">
+                        <input type="number" name="amount" placeholder="Enter course fee" required 
+                               min="1" step="0.01" value="100.00">
+                    </div>
+                    <div style="font-size: 0.85rem; color: var(--gray-500); margin-top: 0.5rem;">
+                        💡 Enter the course fee amount as agreed with the teacher
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label>💳 Payment Method</label>
+                    <select name="payment_method" required>
+                        <option value="">Select Payment Method</option>
+                        <option value="credit_card">💳 Credit Card</option>
+                        <option value="debit_card">💳 Debit Card</option>
+                        <option value="paypal">💰 PayPal</option>
+                        <option value="stripe">💸 Stripe</option>
+                    </select>
+                </div>
+                
+                <div class="form-group">
+                    <label>🔢 Card Number</label>
+                    <input type="text" name="card_number" placeholder="1234 5678 9012 3456" required 
+                           pattern="[0-9\s]{13,19}" maxlength="19">
+                </div>
+                
+                <div class="card-row">
+                    <div class="form-group">
+                        <label>📅 Expiry Date</label>
+                        <input type="text" name="expiry_date" placeholder="MM/YY" required 
+                               pattern="(0[1-9]|1[0-2])\/[0-9]{2}">
+                    </div>
+                    <div class="form-group">
+                        <label>🔒 CVV</label>
+                        <input type="text" name="cvv" placeholder="123" required 
+                               pattern="[0-9]{3,4}" maxlength="4">
+                    </div>
+                </div>
+                
+                <div class="form-group">
+                    <label>👤 Cardholder Name</label>
+                    <input type="text" name="cardholder_name" placeholder="John Doe" required>
+                </div>
+                
+                <div class="form-group">
+                    <label>💱 Currency</label>
+                    <select name="currency">
+                        <option value="USD">USD ($) - US Dollar</option>
+                        <option value="PKR">PKR (₨) - Pakistani Rupee</option>
+                        <option value="EUR">EUR (€) - Euro</option>
+                        <option value="GBP">GBP (£) - British Pound</option>
+                    </select>
+                </div>
+
+                <div class="security-badge">
+                    🔒 Secure SSL Encrypted Payment
+                </div>
+                
+                <button type="submit" class="btn">
+                    🎓 Complete Enrollment
+                </button>
+                
+                <div style="text-align: center; margin-top: 1.5rem; color: var(--gray-600); font-size: 0.9em; line-height: 1.5;">
+                    <p>💰 Flexible payment options available</p>
+                    <p>🔄 30-day satisfaction guarantee</p>
+                    <p>📞 24/7 customer support</p>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Format card number input
+            const cardNumberInput = document.querySelector('input[name="card_number"]');
+            cardNumberInput.addEventListener('input', function(e) {
+                let value = e.target.value.replace(/\s+/g, '').replace(/[^0-9]/gi, '');
+                let matches = value.match(/\d{4,16}/g);
+                let match = matches && matches[0] || '';
+                let parts = [];
+                
+                for (let i = 0, len = match.length; i < len; i += 4) {
+                    parts.push(match.substring(i, i + 4));
+                }
+                
+                if (parts.length) {
+                    e.target.value = parts.join(' ');
+                } else {
+                    e.target.value = value;
+                }
+            });
+
+            // Format expiry date input
+            const expiryInput = document.querySelector('input[name="expiry_date"]');
+            expiryInput.addEventListener('input', function(e) {
+                let value = e.target.value.replace(/\D/g, '');
+                if (value.length >= 2) {
+                    e.target.value = value.substring(0, 2) + '/' + value.substring(2, 4);
+                }
+            });
+
+            // Add animation to form elements
+            const formGroups = document.querySelectorAll('.form-group');
+            formGroups.forEach((group, index) => {
+                group.style.animationDelay = `${index * 0.1}s`;
+            });
+
+            // Auto-focus on amount input
+            document.querySelector('input[name="amount"]').focus();
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,444 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Learn <%= course.title %> - UpSkillo</title>
+    <style>
+        :root {
+            --primary: #667eea;
+            --primary-dark: #5a6fd8;
+            --secondary: #764ba2;
+            --success: #10b981;
+            --success-dark: #059669;
+            --warning: #f59e0b;
+            --danger: #ef4444;
+            --gray-50: #f9fafb;
+            --gray-100: #f3f4f6;
+            --gray-200: #e5e7eb;
+            --gray-300: #d1d5db;
+            --gray-600: #4b5563;
+            --gray-700: #374151;
+            --gray-800: #1f2937;
+            --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+            --shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+            --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body { 
+            font-family: 'Inter', 'Segoe UI', Arial, sans-serif; 
+            margin: 0; 
+            padding: 0; 
+            background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%);
+            min-height: 100vh;
+            color: var(--gray-800);
+            line-height: 1.6;
+        }
+
+        .header { 
+            background: white; 
+            padding: 1.5rem 2rem; 
+            box-shadow: var(--shadow);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            backdrop-filter: blur(10px);
+        }
+
+        .header h1 {
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            font-size: 1.8rem;
+            font-weight: 700;
+        }
+
+        .user-info {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .nav { 
+            background: linear-gradient(135deg, var(--primary), var(--secondary)); 
+            padding: 1rem 2rem; 
+            box-shadow: var(--shadow);
+        }
+
+        .nav a { 
+            color: white; 
+            text-decoration: none; 
+            margin-right: 2rem;
+            font-weight: 500;
+            padding: 0.5rem 1rem;
+            border-radius: 8px;
+            transition: all 0.3s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .nav a:hover { 
+            background: rgba(255, 255, 255, 0.15);
+            transform: translateY(-1px);
+        }
+
+        .container { 
+            max-width: 1200px; 
+            margin: 2rem auto; 
+            padding: 0 1.5rem;
+            display: flex;
+            gap: 2rem;
+        }
+
+        .sidebar { 
+            flex: 1; 
+            background: white; 
+            padding: 2rem; 
+            border-radius: 16px;
+            box-shadow: var(--shadow);
+            max-width: 350px;
+            height: fit-content;
+            position: sticky;
+            top: 120px;
+        }
+
+        .content { 
+            flex: 2; 
+            background: white; 
+            padding: 2.5rem; 
+            border-radius: 16px;
+            box-shadow: var(--shadow);
+        }
+
+        .content-item { 
+            padding: 1.25rem; 
+            border: 1px solid var(--gray-200); 
+            margin: 0.5rem 0; 
+            border-radius: 12px; 
+            cursor: pointer; 
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .content-item:hover { 
+            background: var(--gray-50);
+            transform: translateX(5px);
+            border-color: var(--primary);
+        }
+
+        .content-item.completed { 
+            background: #f0fdf4; 
+            border-color: #bbf7d0;
+            border-left: 4px solid var(--success);
+        }
+
+        .content-item.current { 
+            background: #eff6ff; 
+            border-color: var(--primary);
+            border-left: 4px solid var(--primary);
+        }
+
+        .btn { 
+            padding: 0.75rem 1.5rem; 
+            background: var(--primary); 
+            color: white; 
+            border: none; 
+            border-radius: 8px; 
+            cursor: pointer; 
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            font-size: 0.9rem;
+        }
+
+        .btn:hover { 
+            background: var(--primary-dark);
+            transform: translateY(-2px);
+            box-shadow: var(--shadow);
+        }
+
+        .btn-success {
+            background: var(--success);
+        }
+
+        .btn-success:hover {
+            background: var(--success-dark);
+        }
+
+        .btn-secondary {
+            background: var(--gray-600);
+        }
+
+        .btn-secondary:hover {
+            background: var(--gray-700);
+        }
+
+        .btn-outline {
+            background: transparent;
+            border: 2px solid var(--primary);
+            color: var(--primary);
+        }
+
+        .btn-outline:hover {
+            background: var(--primary);
+            color: white;
+        }
+
+        .progress-bar { 
+            background: var(--gray-200); 
+            border-radius: 10px; 
+            height: 12px; 
+            margin: 1rem 0; 
+            overflow: hidden;
+        }
+
+        .progress-fill { 
+            background: linear-gradient(135deg, var(--success), var(--success-dark)); 
+            height: 100%; 
+            border-radius: 10px; 
+            transition: width 0.5s ease;
+        }
+
+        .badge { 
+            background: var(--success); 
+            color: white; 
+            padding: 0.25rem 0.75rem; 
+            border-radius: 20px; 
+            font-size: 0.75rem; 
+            font-weight: 600; 
+            margin-left: 0.5rem;
+        }
+
+        .role-badge {
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            color: white;
+            padding: 0.25rem 0.75rem;
+            border-radius: 20px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            text-transform: capitalize;
+        }
+
+        .course-overview {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1.5rem;
+            margin: 2rem 0;
+        }
+
+        .overview-card {
+            background: var(--gray-50);
+            padding: 1.5rem;
+            border-radius: 12px;
+            border-left: 4px solid var(--primary);
+        }
+
+        .continue-section {
+            background: linear-gradient(135deg, #eff6ff, #f0f9ff);
+            padding: 2rem;
+            border-radius: 16px;
+            margin: 2rem 0;
+            border-left: 4px solid var(--primary);
+            text-align: center;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .fade-in {
+            animation: fadeIn 0.6s ease-out;
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                flex-direction: column;
+                padding: 0 1rem;
+            }
+            
+            .sidebar {
+                max-width: none;
+                position: static;
+            }
+            
+            .nav {
+                padding: 1rem;
+                overflow-x: auto;
+            }
+            
+            .nav a {
+                margin-right: 1rem;
+                font-size: 0.9rem;
+            }
+            
+            .course-overview {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>🎓 UpSkillo</h1>
+        <div class="user-info">
+            <span>Welcome, <strong><%= user.name %></strong> <span class="role-badge"><%= user.type %></span></span>
+            <a href="/logout" class="btn btn-outline" style="padding: 0.5rem 1rem; font-size: 0.85rem;">🚪 Logout</a>
+        </div>
+    </div>
+    
+    <div class="nav">
+        <a href="/dashboard">📊 Dashboard</a>
+        <a href="/courses">📚 Browse Courses</a>
+        <a href="/my-learning">🎓 My Learning</a>
+    </div>
+    
+    <div class="container">
+        <div class="sidebar fade-in">
+            <h3 style="margin-bottom: 1.5rem; color: var(--gray-800); display: flex; align-items: center; gap: 0.5rem;">📚 Course Content</h3>
+            
+            <div id="progress-section" style="margin-bottom: 2rem;">
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.5rem;">
+                    <span style="font-weight: 600; color: var(--gray-700);">Progress</span>
+                    <span id="progress-text" style="font-weight: 700; color: var(--success);">0%</span>
+                </div>
+                <div class="progress-bar">
+                    <div class="progress-fill" id="progress-fill" style="width: 0%;"></div>
+                </div>
+            </div>
+            
+            <div id="content-list">
+                <% content.forEach(function(item, index) { %>
+                    <div class="content-item <%= item.is_completed ? 'completed' : '' %> <%= currentContent && currentContent.id === item.id ? 'current' : '' %>">
+                        <a href="/learn/<%= course.id %>/content/<%= item.id %>" style="text-decoration: none; color: inherit; display: block;">
+                            <div style="display: flex; justify-content: space-between; align-items: flex-start;">
+                                <div style="flex: 1;">
+                                    <div style="font-weight: 600; color: var(--gray-800); margin-bottom: 0.25rem;">
+                                        Lesson <%= index + 1 %>: <%= item.lesson_title %>
+                                    </div>
+                                    <% if (item.description) { %>
+                                        <div style="font-size: 0.85rem; color: var(--gray-600); line-height: 1.4;">
+                                            <%= item.description.length > 60 ? item.description.substring(0, 60) + '...' : item.description %>
+                                        </div>
+                                    <% } %>
+                                </div>
+                                <% if (item.is_completed) { %>
+                                    <span class="badge">✓</span>
+                                <% } %>
+                            </div>
+                        </a>
+                    </div>
+                <% }); %>
+            </div>
+            
+            <% if (currentContent) { %>
+                <div style="margin-top: 2rem; text-align: center;">
+                    <a href="/learn/<%= course.id %>/content/<%= currentContent.id %>" class="btn btn-success" style="width: 100%;">
+                        <% const nextContent = content.find(item => !item.is_completed); %>
+                        <% if (nextContent) { %>
+                            ▶️ Continue with <%= nextContent.lesson_title %>
+                        <% } else { %>
+                            🎉 Review Course
+                        <% } %>
+                    </a>
+                </div>
+            <% } %>
+        </div>
+        
+        <div class="content fade-in">
+            <h1 style="margin-bottom: 1rem; color: var(--gray-800);"><%= course.title %></h1>
+            <p style="color: var(--gray-600); font-size: 1.1rem; margin-bottom: 2rem;"><%= course.description %></p>
+            
+            <% if (currentContent) { %>
+                <div class="continue-section">
+                    <h3 style="margin-bottom: 1rem; color: var(--primary);">🚀 Continue Learning</h3>
+                    <p style="color: var(--gray-700); margin-bottom: 1.5rem;">Your next lesson: <strong><%= currentContent.lesson_title %></strong></p>
+                    <a href="/learn/<%= course.id %>/content/<%= currentContent.id %>" class="btn btn-success" style="min-width: 200px;">
+                        ▶️ Start Learning
+                    </a>
+                </div>
+            <% } else if (content.length > 0) { %>
+                <div class="continue-section">
+                    <h3 style="margin-bottom: 1rem; color: var(--primary);">🎯 Start Learning</h3>
+                    <p style="color: var(--gray-700); margin-bottom: 1.5rem;">Begin with: <strong><%= content[0].lesson_title %></strong></p>
+                    <a href="/learn/<%= course.id %>/content/<%= content[0].id %>" class="btn btn-success" style="min-width: 200px;">
+                        ▶️ Start First Lesson
+                    </a>
+                </div>
+            <% } %>
+            
+            <div style="margin-top: 2rem;">
+                <h3 style="margin-bottom: 1.5rem; color: var(--gray-800); display: flex; align-items: center; gap: 0.5rem;">📋 Course Overview</h3>
+                <p style="color: var(--gray-600); margin-bottom: 1.5rem;">This course contains <strong><%= content.length %></strong> lessons covering various aspects of <strong><%= course.title %></strong>.</p>
+                
+                <div class="course-overview">
+                    <div class="overview-card">
+                        <h4 style="margin-bottom: 1rem; color: var(--gray-800); display: flex; align-items: center; gap: 0.5rem;">📚 What You'll Learn</h4>
+                        <ul style="color: var(--gray-600); list-style: none; padding: 0;">
+                            <li style="padding: 0.5rem 0; border-bottom: 1px solid var(--gray-200);">✓ Comprehensive understanding of the subject</li>
+                            <li style="padding: 0.5rem 0; border-bottom: 1px solid var(--gray-200);">✓ Practical skills and techniques</li>
+                            <li style="padding: 0.5rem 0; border-bottom: 1px solid var(--gray-200);">✓ Real-world applications</li>
+                            <li style="padding: 0.5rem 0;">✓ Best practices and methodologies</li>
+                        </ul>
+                    </div>
+                    
+                    <div class="overview-card">
+                        <h4 style="margin-bottom: 1rem; color: var(--gray-800); display: flex; align-items: center; gap: 0.5rem;">🎯 Course Features</h4>
+                        <ul style="color: var(--gray-600); list-style: none; padding: 0;">
+                            <li style="padding: 0.5rem 0; border-bottom: 1px solid var(--gray-200);">✓ <%= content.length %> video lessons</li>
+                            <li style="padding: 0.5rem 0; border-bottom: 1px solid var(--gray-200);">✓ Lifetime access</li>
+                            <li style="padding: 0.5rem 0; border-bottom: 1px solid var(--gray-200);">✓ Certificate of completion</li>
+                            <li style="padding: 0.5rem 0;">✓ Community support</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            
+            <div style="margin-top: 2rem; text-align: center;">
+                <a href="/course/<%= course.id %>" class="btn btn-outline">📖 View Course Details & Reviews</a>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Load progress
+        async function loadProgress() {
+            try {
+                const response = await fetch('/api/progress/<%= course.id %>');
+                const data = await response.json();
+                
+                if (data.percentage !== undefined) {
+                    document.getElementById('progress-text').textContent = data.percentage + '%';
+                    document.getElementById('progress-fill').style.width = data.percentage + '%';
+                }
+            } catch (error) {
+                console.error('Error loading progress:', error);
+            }
+        }
+        
+        // Add subtle animations
+        document.addEventListener('DOMContentLoaded', function() {
+            const items = document.querySelectorAll('.content-item');
+            items.forEach((item, index) => {
+                item.style.animationDelay = `${index * 0.1}s`;
+            });
+            loadProgress();
+        });
+    </script>
+</body>
+</html>
